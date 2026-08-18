@@ -239,13 +239,6 @@
       display: none;
     }
 
-    .status-alert.success {
-      background-color: #d1e7dd;
-      color: #0f5132;
-      border: 1px solid #badbcc;
-      display: block;
-    }
-
     .status-alert.error {
       background-color: #f8d7da;
       color: #842029;
@@ -391,10 +384,10 @@
 
   <nav class="navbar">
     <a href="#" class="brand">
-      <img src="https://cms2023.kemenag.go.id/storage/files/shares/Logo/Kementerian_Agama_new_logo%20(2).png" alt="Logo Kemenag">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Logo_Kementerian_Agama_RI.png/800px-Logo_Kementerian_Agama_RI.png" alt="Logo Kemenag">
       <div class="brand-text">
-        <h1>Kanwil Kemenag Provinsi Banten</h1>
-        <p>Pelayanan Terpadu Satu Pintu</p>
+        <h1>Kanwil Kemenag Prov. Banten</h1>
+        <p>Buku Tamu Elektronik</p>
       </div>
     </a>
     <button class="nav-btn" id="navAdminBtn" onclick="openLoginModal()">
@@ -407,7 +400,7 @@
     <div id="guestFormView">
       <div class="card">
         <div class="card-header">
-          <img src="https://cms2023.kemenag.go.id/storage/files/shares/Logo/Kementerian_Agama_new_logo%20(2).png" class="header-logo" alt="Logo Kemenag">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Logo_Kementerian_Agama_RI.png/800px-Logo_Kementerian_Agama_RI.png" class="header-logo" alt="Logo Kemenag">
           <h2>Buku Tamu Digital</h2>
           <p>Kantor Wilayah Kementerian Agama Provinsi Banten</p>
         </div>
@@ -449,14 +442,14 @@
                 <div class="checkbox-box">
                   <input type="checkbox" id="persetujuan" required>
                   <label for="persetujuan">
-                    Saya menyetujui bahwa data kunjungan ini dicatat pada buku tamu.
+                    Saya menyetujui bahwa data kunjungan ini dicatat sebagai data tamu resmi di Kantor Wilayah Kementerian Agama Provinsi Banten.
                   </label>
                 </div>
               </div>
 
               <div class="form-group full-width">
                 <button type="submit" id="submitBtn" class="btn-submit">
-                  <i class="fa-solid fa-paper-plane"></i> Simpan
+                  <i class="fa-solid fa-paper-plane"></i> Kirim Data Kunjungan
                 </button>
               </div>
 
@@ -469,82 +462,82 @@
     </div>
 
     <div id="adminDashboardView">
-  <div class="dashboard-header">
-    <div class="dashboard-title">
-      <h2><i class="fa-solid fa-gauge"></i> Dashboard Data Kunjungan</h2>
-      <p>Kanwil Kementerian Agama Provinsi Banten</p>
-    </div>
-    <button class="btn-logout" onclick="logoutAdmin()">
-      <i class="fa-solid fa-right-from-bracket"></i> Keluar Admin
-    </button>
-  </div>
-
-  <div class="card">
-    <div class="card-body">
-      
-      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 20px; background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
-        
-        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-          <i class="fa-solid fa-filter" style="color: var(--primary-green); font-size: 16px; margin-right: 4px;" title="Filter Data"></i>
-          
-          <select id="filterMonth" class="form-control" style="width: auto; padding: 6px 12px; font-size: 13px;">
-            <option value="all">Semua Bulan</option>
-            <option value="1">Januari</option>
-            <option value="2">Februari</option>
-            <option value="3">Maret</option>
-            <option value="4">April</option>
-            <option value="5">Mei</option>
-            <option value="6">Juni</option>
-            <option value="7">Juli</option>
-            <option value="8">Agustus</option>
-            <option value="9">September</option>
-            <option value="10">Oktober</option>
-            <option value="11">November</option>
-            <option value="12">Desember</option>
-          </select>
-
-          <select id="filterYear" class="form-control" style="width: auto; padding: 6px 12px; font-size: 13px;">
-            <option value="all">Semua Tahun</option>
-            <option value="2025">2025</option>
-            <option value="2026" selected>2026</option>
-            <option value="2027">2027</option>
-          </select>
-
-          <button onclick="fetchGuestData()" class="nav-btn" style="background: var(--primary-green); border: none; padding: 7px 14px;">
-            <i class="fa-solid fa-magnifying-glass"></i> Terapkan
-          </button>
+      <div class="dashboard-header">
+        <div class="dashboard-title">
+          <h2><i class="fa-solid fa-gauge"></i> Dashboard Data Kunjungan</h2>
+          <p>Kanwil Kementerian Agama Provinsi Banten</p>
         </div>
-
-        <span style="font-size: 13px; font-weight: 700; color: var(--primary-green);" id="totalRecords">
-          Total Tamu: 0
-        </span>
+        <button class="btn-logout" onclick="logoutAdmin()">
+          <i class="fa-solid fa-right-from-bracket"></i> Keluar Admin
+        </button>
       </div>
 
-      <div class="table-responsive">
-        <table>
-          <thead>
-            <tr>
-              <th>Timestamp</th>
-              <th>Nama Lengkap</th>
-              <th>Instansi/Asal</th>
-              <th>Telepon</th>
-              <th>Email</th>
-              <th>Keperluan</th>
-              <th>Pesan</th>
-              <th>Persetujuan</th>
-            </tr>
-          </thead>
-          <tbody id="guestTableBody">
-            <tr>
-              <td colspan="8" style="text-align: center; color: var(--text-muted);">Memuat data...</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <div class="card">
+        <div class="card-body">
+          
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 20px; background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
+            
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+              <i class="fa-solid fa-filter" style="color: var(--primary-green); font-size: 16px; margin-right: 4px;" title="Filter Data"></i>
+              
+              <select id="filterMonth" class="form-control" style="width: auto; padding: 6px 12px; font-size: 13px;">
+                <option value="all">Semua Bulan</option>
+                <option value="1">Januari</option>
+                <option value="2">Februari</option>
+                <option value="3">Maret</option>
+                <option value="4">April</option>
+                <option value="5">Mei</option>
+                <option value="6">Juni</option>
+                <option value="7">Juli</option>
+                <option value="8">Agustus</option>
+                <option value="9">September</option>
+                <option value="10">Oktober</option>
+                <option value="11">November</option>
+                <option value="12">Desember</option>
+              </select>
 
+              <select id="filterYear" class="form-control" style="width: auto; padding: 6px 12px; font-size: 13px;">
+                <option value="all">Semua Tahun</option>
+                <option value="2025">2025</option>
+                <option value="2026" selected>2026</option>
+                <option value="2027">2027</option>
+              </select>
+
+              <button onclick="fetchGuestData()" class="nav-btn" style="background: var(--primary-green); border: none; padding: 7px 14px;">
+                <i class="fa-solid fa-magnifying-glass"></i> Terapkan
+              </button>
+            </div>
+
+            <span style="font-size: 13px; font-weight: 700; color: var(--primary-green);" id="totalRecords">
+              Total Tamu: 0
+            </span>
+          </div>
+
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Nama Lengkap</th>
+                  <th>Instansi/Asal</th>
+                  <th>Telepon</th>
+                  <th>Email</th>
+                  <th>Keperluan</th>
+                  <th>Pesan</th>
+                  <th>Persetujuan</th>
+                </tr>
+              </thead>
+              <tbody id="guestTableBody">
+                <tr>
+                  <td colspan="8" style="text-align: center; color: var(--text-muted);">Memuat data...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
   </div>
 
@@ -568,20 +561,21 @@
       </div>
     </div>
   </div>
+
   <div class="modal-overlay" id="successModal">
-  <div class="modal-card" style="text-align: center; padding: 25px;">
-    <div style="font-size: 50px; color: #10b981; margin-bottom: 15px;">
-      <i class="fa-solid fa-circle-check"></i>
+    <div class="modal-card" style="text-align: center; padding: 25px;">
+      <div style="font-size: 50px; color: #10b981; margin-bottom: 15px;">
+        <i class="fa-solid fa-circle-check"></i>
+      </div>
+      <h3 style="color: var(--dark-green); margin-bottom: 10px; font-size: 20px;">Berhasil Terkirim!</h3>
+      <p style="font-size: 14px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;">
+        Terima kasih, data kunjungan Anda telah berhasil tersimpan di sistem Buku Tamu Kanwil Kemenag Banten.
+      </p>
+      <button onclick="closeSuccessModal()" class="btn-submit" style="padding: 10px 20px;">
+        Tutup
+      </button>
     </div>
-    <h3 style="color: var(--dark-green); margin-bottom: 10px; font-size: 20px;">Berhasil Terkirim!</h3>
-    <p style="font-size: 14px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;">
-      Terima kasih, data kunjungan Anda telah berhasil tersimpan di sistem Buku Tamu Kanwil Kemenag Banten.
-    </p>
-    <button onclick="closeSuccessModal()" class="btn-submit" style="padding: 10px 20px;">
-      Tutup
-    </button>
   </div>
-</div>
 
   <footer>
     &copy; Kantor Wilayah Kementerian Agama Provinsi Banten. All Rights Reserved.
@@ -589,11 +583,17 @@
 
   <script>
     // ------------------------------------------------------------------
-    // MASUKKAN URL GOOGLE APPS SCRIPT ANDA DI KUTIP BAWAH INI
+    // MASUKKAN URL GOOGLE APPS SCRIPT ANDA DI BAWAH INI
     // ------------------------------------------------------------------
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby3uuW8nyxho_rLFBYEeUomyICdQsY8WeaOZhCXd6t7iQy7QZfWXGkfxw2NjXiZcgqp/exec"; 
-    const ADMIN_PASSCODE = "kemenagbanten123"; // Anda bisa mengganti password ini
+    const SCRIPT_URL = "PASANG_URL_GOOGLE_APPS_SCRIPT_ANDA_DI_SINI"; 
+    const ADMIN_PASSCODE = "kemenagbanten123";
 
+    // Function untuk menutup modal sukses
+    function closeSuccessModal() {
+      document.getElementById('successModal').classList.remove('active');
+    }
+
+    // Event Handler submit form tamu
     document.getElementById('guestForm').addEventListener('submit', function(e) {
       e.preventDefault();
       
@@ -622,59 +622,24 @@
       })
       .then(res => res.json())
       .then(res => {
-        statusAlert.className = 'status-alert success';
-        statusAlert.innerHTML = '<i class="fa-solid fa-circle-check"></i> Data kunjungan Anda berhasil tersimpan. Terima kasih!';
-        // Event Handler submit form tamu
-document.getElementById('guestForm').addEventListener('submit', function(e) {
-  e.preventDefault(); // Mencegah form reload halaman otomatis
-  
-  const submitBtn = document.getElementById('submitBtn');
-  const statusAlert = document.getElementById('statusAlert');
-  
-  // Mengubah status tombol saat proses pengiriman
-  submitBtn.disabled = true;
-  submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim Data...';
-  
-  statusAlert.className = 'status-alert';
-  statusAlert.style.display = 'none';
+        // Reset form
+        document.getElementById('guestForm').reset();
+        
+        // Tampilkan Modal Notifikasi Sukses
+        document.getElementById('successModal').classList.add('active');
+      })
+      .catch(err => {
+        statusAlert.className = 'status-alert error';
+        statusAlert.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Terjadi kesalahan saat menyimpan data. Silakan coba lagi.';
+        statusAlert.style.display = 'block';
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Data Kunjungan';
+      });
+    });
 
-  // Mengambil data dari inputan form
-  const formData = {
-    nama: document.getElementById('nama').value,
-    instansi: document.getElementById('instansi').value,
-    telepon: document.getElementById('telepon').value,
-    email: document.getElementById('email').value || '-',
-    keperluan: document.getElementById('keperluan').value,
-    pesan: document.getElementById('pesan').value || '-',
-    persetujuan: document.getElementById('persetujuan').checked
-  };
-
-  // Mengirimkan data ke Google Apps Script (Database Google Sheets)
-  fetch(SCRIPT_URL, {
-    method: 'POST',
-    body: JSON.stringify(formData)
-  })
-  .then(res => res.json())
-  .then(res => {
-    // Reset isi form setelah berhasil
-    document.getElementById('guestForm').reset();
-    
-    // Tampilkan Modal Notifikasi Sukses (Pop-up)
-    document.getElementById('successModal').classList.add('active');
-  })
-  .catch(err => {
-    // Tampilkan pesan error jika koneksi gagal
-    statusAlert.className = 'status-alert error';
-    statusAlert.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Terjadi kesalahan saat menyimpan data. Silakan coba lagi.';
-    statusAlert.style.display = 'block';
-  })
-  .finally(() => {
-    // Mengembalikan tombol ke keadaan semula
-    submitBtn.disabled = false;
-    submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Data Kunjungan';
-  });
-});
-
+    // Modal Admin Login Logic
     function openLoginModal() {
       document.getElementById('loginModal').classList.add('active');
     }
@@ -709,47 +674,46 @@ document.getElementById('guestForm').addEventListener('submit', function(e) {
       document.getElementById('navAdminBtn').style.display = 'flex';
     }
 
+    // Fetch Data Tamu dengan Filter Periode
     function fetchGuestData() {
-  const tbody = document.getElementById('guestTableBody');
-  tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;"><i class="fa-solid fa-spinner fa-spin"></i> Memuat data dari Google Sheets...</td></tr>';
-  
-  // Ambil nilai filter yang dipilih admin
-  const month = document.getElementById('filterMonth').value;
-  const year = document.getElementById('filterYear').value;
+      const tbody = document.getElementById('guestTableBody');
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;"><i class="fa-solid fa-spinner fa-spin"></i> Memuat data dari Google Sheets...</td></tr>';
+      
+      const month = document.getElementById('filterMonth').value;
+      const year = document.getElementById('filterYear').value;
 
-  // Buat URL request dengan parameter filter
-  let fetchUrl = SCRIPT_URL + '?action=get&month=' + month + '&year=' + year;
+      let fetchUrl = SCRIPT_URL + '?action=get&month=' + month + '&year=' + year;
 
-  fetch(fetchUrl)
-  .then(res => res.json())
-  .then(data => {
-    tbody.innerHTML = '';
-    document.getElementById('totalRecords').innerText = 'Total Tamu: ' + data.length;
-    
-    if (data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color: var(--text-muted);">Tidak ada data kunjungan pada periode ini.</td></tr>';
-      return;
+      fetch(fetchUrl)
+      .then(res => res.json())
+      .then(data => {
+        tbody.innerHTML = '';
+        document.getElementById('totalRecords').innerText = 'Total Tamu: ' + data.length;
+        
+        if (data.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color: var(--text-muted);">Tidak ada data kunjungan pada periode ini.</td></tr>';
+          return;
+        }
+
+        data.forEach(row => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${row.timestamp || '-'}</td>
+            <td><b>${row.nama || '-'}</b></td>
+            <td>${row.instansi || '-'}</td>
+            <td>${row.telepon || '-'}</td>
+            <td>${row.email || '-'}</td>
+            <td>${row.keperluan || '-'}</td>
+            <td>${row.pesan || '-'}</td>
+            <td><span class="badge-check">${row.persetujuan || 'Setuju'}</span></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      })
+      .catch(err => {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:red;">Gagal memuat data. Pastikan URL Web App benar.</td></tr>';
+      });
     }
-
-    data.forEach(row => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${row.timestamp || '-'}</td>
-        <td><b>${row.nama || '-'}</b></td>
-        <td>${row.instansi || '-'}</td>
-        <td>${row.telepon || '-'}</td>
-        <td>${row.email || '-'}</td>
-        <td>${row.keperluan || '-'}</td>
-        <td>${row.pesan || '-'}</td>
-        <td><span class="badge-check">${row.persetujuan || 'Setuju'}</span></td>
-      `;
-      tbody.appendChild(tr);
-    });
-  })
-  .catch(err => {
-    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:red;">Gagal memuat data. Pastikan URL Web App benar.</td></tr>';
-  });
-}
   </script>
 </body>
 </html>
