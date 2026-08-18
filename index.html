@@ -568,6 +568,20 @@
       </div>
     </div>
   </div>
+  <div class="modal-overlay" id="successModal">
+  <div class="modal-card" style="text-align: center; padding: 25px;">
+    <div style="font-size: 50px; color: #10b981; margin-bottom: 15px;">
+      <i class="fa-solid fa-circle-check"></i>
+    </div>
+    <h3 style="color: var(--dark-green); margin-bottom: 10px; font-size: 20px;">Berhasil Terkirim!</h3>
+    <p style="font-size: 14px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;">
+      Terima kasih, data kunjungan Anda telah berhasil tersimpan di sistem Buku Tamu Kanwil Kemenag Banten.
+    </p>
+    <button onclick="closeSuccessModal()" class="btn-submit" style="padding: 10px 20px;">
+      Tutup
+    </button>
+  </div>
+</div>
 
   <footer>
     &copy; Kantor Wilayah Kementerian Agama Provinsi Banten. All Rights Reserved.
@@ -610,17 +624,56 @@
       .then(res => {
         statusAlert.className = 'status-alert success';
         statusAlert.innerHTML = '<i class="fa-solid fa-circle-check"></i> Data kunjungan Anda berhasil tersimpan. Terima kasih!';
-        document.getElementById('guestForm').reset();
-      })
-      .catch(err => {
-        statusAlert.className = 'status-alert error';
-        statusAlert.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Terjadi kesalahan saat menyimpan data. Silakan coba lagi.';
-      })
-      .finally(() => {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Data Kunjungan';
-      });
-    });
+        // Event Handler submit form tamu
+document.getElementById('guestForm').addEventListener('submit', function(e) {
+  e.preventDefault(); // Mencegah form reload halaman otomatis
+  
+  const submitBtn = document.getElementById('submitBtn');
+  const statusAlert = document.getElementById('statusAlert');
+  
+  // Mengubah status tombol saat proses pengiriman
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim Data...';
+  
+  statusAlert.className = 'status-alert';
+  statusAlert.style.display = 'none';
+
+  // Mengambil data dari inputan form
+  const formData = {
+    nama: document.getElementById('nama').value,
+    instansi: document.getElementById('instansi').value,
+    telepon: document.getElementById('telepon').value,
+    email: document.getElementById('email').value || '-',
+    keperluan: document.getElementById('keperluan').value,
+    pesan: document.getElementById('pesan').value || '-',
+    persetujuan: document.getElementById('persetujuan').checked
+  };
+
+  // Mengirimkan data ke Google Apps Script (Database Google Sheets)
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    body: JSON.stringify(formData)
+  })
+  .then(res => res.json())
+  .then(res => {
+    // Reset isi form setelah berhasil
+    document.getElementById('guestForm').reset();
+    
+    // Tampilkan Modal Notifikasi Sukses (Pop-up)
+    document.getElementById('successModal').classList.add('active');
+  })
+  .catch(err => {
+    // Tampilkan pesan error jika koneksi gagal
+    statusAlert.className = 'status-alert error';
+    statusAlert.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Terjadi kesalahan saat menyimpan data. Silakan coba lagi.';
+    statusAlert.style.display = 'block';
+  })
+  .finally(() => {
+    // Mengembalikan tombol ke keadaan semula
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Data Kunjungan';
+  });
+});
 
     function openLoginModal() {
       document.getElementById('loginModal').classList.add('active');
