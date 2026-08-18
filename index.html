@@ -384,10 +384,10 @@
 
   <nav class="navbar">
     <a href="#" class="brand">
-      <img src="https://cms2023.kemenag.go.id/storage/files/shares/Logo/Kementerian_Agama_new_logo%20(2).png" alt="Logo Kemenag">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Logo_Kementerian_Agama_RI.png/800px-Logo_Kementerian_Agama_RI.png" alt="Logo Kemenag">
       <div class="brand-text">
-        <h1>Kanwil Kementerian Agama Provinsi Banten</h1>
-        <p>Pelayanan Terpadu Satu Pintu</p>
+        <h1>Kanwil Kemenag Prov. Banten</h1>
+        <p>Buku Tamu Elektronik</p>
       </div>
     </a>
     <button class="nav-btn" id="navAdminBtn" onclick="openLoginModal()">
@@ -397,10 +397,11 @@
 
   <div class="main-container">
 
+    <!-- FORM TAMU -->
     <div id="guestFormView">
       <div class="card">
         <div class="card-header">
-          <img src="https://cms2023.kemenag.go.id/storage/files/shares/Logo/Kementerian_Agama_new_logo%20(2).png" class="header-logo" alt="Logo Kemenag">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Logo_Kementerian_Agama_RI.png/800px-Logo_Kementerian_Agama_RI.png" class="header-logo" alt="Logo Kemenag">
           <h2>Buku Tamu Digital</h2>
           <p>Kantor Wilayah Kementerian Agama Provinsi Banten</p>
         </div>
@@ -416,6 +417,23 @@
               <div class="form-group">
                 <label for="instansi"><i class="fa-solid fa-building"></i> Instansi / Asal *</label>
                 <input type="text" id="instansi" class="form-control" placeholder="Contoh: KUA Serang / Umum" required>
+              </div>
+
+              <!-- DROPDOWN TUJUAN UNIT KERJA -->
+              <div class="form-group full-width">
+                <label for="unitKerja"><i class="fa-solid fa-sitemap"></i> Tujuan Unit Kerja *</label>
+                <select id="unitKerja" class="form-control" required>
+                  <option value="" disabled selected>-- Pilih Tujuan Unit Kerja --</option>
+                  <option value="Sekretariat">Sekretariat</option>
+                  <option value="Bidang Pendidikan Madrasah">Bidang Pendidikan Madrasah</option>
+                  <option value="Bidang Urusan Agam Islam">Bidang Urusan Agam Islam</option>
+                  <option value="Bidang Pendidikan Agama dan Keagamaan Islam">Bidang Pendidikan Agama dan Keagamaan Islam</option>
+                  <option value="Bidang Penerangan Agama Islam dan Bina Penyelenggara Zakat dan Wakaf">Bidang Penerangan Agama Islam dan Bina Penyelenggara Zakat dan Wakaf</option>
+                  <option value="Bimbingan Masyarakat Kristen">Bimbingan Masyarakat Kristen</option>
+                  <option value="Bimbingan Masyarakat Katolik">Bimbingan Masyarakat Katolik</option>
+                  <option value="Bimbingan Masyarakat Hindu">Bimbingan Masyarakat Hindu</option>
+                  <option value="Bimbingan Masyarakat Buddha">Bimbingan Masyarakat Buddha</option>
+                </select>
               </div>
 
               <div class="form-group">
@@ -442,14 +460,14 @@
                 <div class="checkbox-box">
                   <input type="checkbox" id="persetujuan" required>
                   <label for="persetujuan">
-                    Saya menyetujui bahwa data kunjungan ini dicatat pada Buku Tamu.
+                    Saya menyetujui bahwa data kunjungan ini dicatat sebagai data tamu resmi di Kantor Wilayah Kementerian Agama Provinsi Banten.
                   </label>
                 </div>
               </div>
 
               <div class="form-group full-width">
                 <button type="submit" id="submitBtn" class="btn-submit">
-                  <i class="fa-solid fa-paper-plane"></i> Kirim
+                  <i class="fa-solid fa-paper-plane"></i> Kirim Data Kunjungan
                 </button>
               </div>
 
@@ -461,6 +479,7 @@
       </div>
     </div>
 
+    <!-- DASHBOARD ADMIN -->
     <div id="adminDashboardView">
       <div class="dashboard-header">
         <div class="dashboard-title">
@@ -520,6 +539,7 @@
                   <th>Timestamp</th>
                   <th>Nama Lengkap</th>
                   <th>Instansi/Asal</th>
+                  <th>Tujuan Unit Kerja</th>
                   <th>Telepon</th>
                   <th>Email</th>
                   <th>Keperluan</th>
@@ -529,7 +549,7 @@
               </thead>
               <tbody id="guestTableBody">
                 <tr>
-                  <td colspan="8" style="text-align: center; color: var(--text-muted);">Memuat data...</td>
+                  <td colspan="9" style="text-align: center; color: var(--text-muted);">Memuat data...</td>
                 </tr>
               </tbody>
             </table>
@@ -541,6 +561,7 @@
 
   </div>
 
+  <!-- MODAL LOGIN ADMIN -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal-card">
       <div class="modal-header">
@@ -562,6 +583,7 @@
     </div>
   </div>
 
+  <!-- MODAL NOTIFIKASI SUKSES -->
   <div class="modal-overlay" id="successModal">
     <div class="modal-card" style="text-align: center; padding: 25px;">
       <div style="font-size: 50px; color: #10b981; margin-bottom: 15px;">
@@ -569,7 +591,7 @@
       </div>
       <h3 style="color: var(--dark-green); margin-bottom: 10px; font-size: 20px;">Berhasil Terkirim!</h3>
       <p style="font-size: 14px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;">
-        Terima kasih, data kunjungan Anda telah tersimpan.
+        Terima kasih, data kunjungan Anda telah berhasil tersimpan di sistem Buku Tamu Kanwil Kemenag Banten.
       </p>
       <button onclick="closeSuccessModal()" class="btn-submit" style="padding: 10px 20px;">
         Tutup
@@ -582,15 +604,13 @@
   </footer>
 
   <script>
-    // URL Google Apps Script milik Anda
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwzfJIURneK_eZ0rNp9V3M8h6zLlHXYPYoRGmLPJu2cuOfaq6PJoNWrhMmVqTBiSap2/exec"; 
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyftTbJfQvht_94C87ZU2an-Ti0pq9zC8_7Z.../exec"; // Masukkan URL Web App Anda
     const ADMIN_PASSCODE = "kemenagbanten123";
 
     function closeSuccessModal() {
       document.getElementById('successModal').classList.remove('active');
     }
 
-    // Event handler pengiriman form yang diperbaiki (Menggunakan URLSearchParams)
     document.getElementById('guestForm').addEventListener('submit', function(e) {
       e.preventDefault();
       
@@ -606,6 +626,7 @@
       const formData = new URLSearchParams();
       formData.append('nama', document.getElementById('nama').value);
       formData.append('instansi', document.getElementById('instansi').value);
+      formData.append('unitKerja', document.getElementById('unitKerja').value); // Pengiriman Parameter Baru
       formData.append('telepon', document.getElementById('telepon').value);
       formData.append('email', document.getElementById('email').value || '-');
       formData.append('keperluan', document.getElementById('keperluan').value);
@@ -671,7 +692,7 @@
 
     function fetchGuestData() {
       const tbody = document.getElementById('guestTableBody');
-      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;"><i class="fa-solid fa-spinner fa-spin"></i> Memuat data dari Google Sheets...</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;"><i class="fa-solid fa-spinner fa-spin"></i> Memuat data dari Google Sheets...</td></tr>';
       
       const month = document.getElementById('filterMonth').value;
       const year = document.getElementById('filterYear').value;
@@ -685,7 +706,7 @@
         
         if (!Array.isArray(data) || data.length === 0) {
           document.getElementById('totalRecords').innerText = 'Total Tamu: 0';
-          tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color: var(--text-muted);">Tidak ada data kunjungan pada periode ini.</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color: var(--text-muted);">Tidak ada data kunjungan pada periode ini.</td></tr>';
           return;
         }
 
@@ -697,6 +718,7 @@
             <td>${row.timestamp || '-'}</td>
             <td><b>${row.nama || '-'}</b></td>
             <td>${row.instansi || '-'}</td>
+            <td>${row.unitKerja || '-'}</td>
             <td>${row.telepon || '-'}</td>
             <td>${row.email || '-'}</td>
             <td>${row.keperluan || '-'}</td>
@@ -707,7 +729,7 @@
         });
       })
       .catch(err => {
-        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:red;">Gagal memuat data. Pastikan URL Web App benar.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:red;">Gagal memuat data. Pastikan URL Web App benar.</td></tr>';
       });
     }
   </script>
