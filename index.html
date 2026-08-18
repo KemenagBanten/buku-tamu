@@ -582,18 +582,15 @@
   </footer>
 
   <script>
-    // ------------------------------------------------------------------
-    // MASUKKAN URL GOOGLE APPS SCRIPT ANDA DI BAWAH INI
-    // ------------------------------------------------------------------
+    // URL Google Apps Script milik Anda
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwzfJIURneK_eZ0rNp9V3M8h6zLlHXYPYoRGmLPJu2cuOfaq6PJoNWrhMmVqTBiSap2/exec"; 
     const ADMIN_PASSCODE = "kemenagbanten123";
 
-    // Function untuk menutup modal sukses
     function closeSuccessModal() {
       document.getElementById('successModal').classList.remove('active');
     }
 
-    // Event Handler submit form tamu
+    // Event handler pengiriman form yang diperbaiki (Menggunakan URLSearchParams)
     document.getElementById('guestForm').addEventListener('submit', function(e) {
       e.preventDefault();
       
@@ -606,31 +603,30 @@
       statusAlert.className = 'status-alert';
       statusAlert.style.display = 'none';
 
-      const formData = {
-        nama: document.getElementById('nama').value,
-        instansi: document.getElementById('instansi').value,
-        telepon: document.getElementById('telepon').value,
-        email: document.getElementById('email').value || '-',
-        keperluan: document.getElementById('keperluan').value,
-        pesan: document.getElementById('pesan').value || '-',
-        persetujuan: document.getElementById('persetujuan').checked
-      };
+      const formData = new URLSearchParams();
+      formData.append('nama', document.getElementById('nama').value);
+      formData.append('instansi', document.getElementById('instansi').value);
+      formData.append('telepon', document.getElementById('telepon').value);
+      formData.append('email', document.getElementById('email').value || '-');
+      formData.append('keperluan', document.getElementById('keperluan').value);
+      formData.append('pesan', document.getElementById('pesan').value || '-');
+      formData.append('persetujuan', document.getElementById('persetujuan').checked ? 'Setuju' : 'Tidak');
 
       fetch(SCRIPT_URL, {
         method: 'POST',
-        body: JSON.stringify(formData)
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData.toString()
       })
       .then(res => res.json())
       .then(res => {
-        // Reset form
         document.getElementById('guestForm').reset();
-        
-        // Tampilkan Modal Notifikasi Sukses
         document.getElementById('successModal').classList.add('active');
       })
       .catch(err => {
         statusAlert.className = 'status-alert error';
-        statusAlert.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Terjadi kesalahan saat menyimpan data. Silakan coba lagi.';
+        statusAlert.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Terjadi kesalahan saat menyimpan data. Silakan pastikan Web App sudah diset ke "Anyone".';
         statusAlert.style.display = 'block';
       })
       .finally(() => {
@@ -639,7 +635,6 @@
       });
     });
 
-    // Modal Admin Login Logic
     function openLoginModal() {
       document.getElementById('loginModal').classList.add('active');
     }
@@ -674,7 +669,6 @@
       document.getElementById('navAdminBtn').style.display = 'flex';
     }
 
-    // Fetch Data Tamu dengan Filter Periode
     function fetchGuestData() {
       const tbody = document.getElementById('guestTableBody');
       tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;"><i class="fa-solid fa-spinner fa-spin"></i> Memuat data dari Google Sheets...</td></tr>';
@@ -688,12 +682,14 @@
       .then(res => res.json())
       .then(data => {
         tbody.innerHTML = '';
-        document.getElementById('totalRecords').innerText = 'Total Tamu: ' + data.length;
         
-        if (data.length === 0) {
+        if (!Array.isArray(data) || data.length === 0) {
+          document.getElementById('totalRecords').innerText = 'Total Tamu: 0';
           tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color: var(--text-muted);">Tidak ada data kunjungan pada periode ini.</td></tr>';
           return;
         }
+
+        document.getElementById('totalRecords').innerText = 'Total Tamu: ' + data.length;
 
         data.forEach(row => {
           const tr = document.createElement('tr');
