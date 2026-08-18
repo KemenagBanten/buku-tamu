@@ -390,7 +390,7 @@
         <p>Buku Tamu Elektronik</p>
       </div>
     </a>
-    <button class="nav-btn" id="navAdminBtn" onclick="openLoginModal()">
+    <button class="nav-btn" id="navAdminBtn">
       <i class="fa-solid fa-user-shield"></i> Admin Panel
     </button>
   </nav>
@@ -604,78 +604,102 @@
   </footer>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwdd3AIWCG-pmN4nvX0alZ915mwd9LqVmxq5leJv4c0C7S_d_QL5iS4dRkZLgesGnlA/exec; // Masukkan URL Web App Anda
+    // URL Web App Google Apps Script Terbaru Anda
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_Md4j_xoxSKv7zaFeKdIWh3HN9_lBhbn9VmszSWhyySVFSNxw-8pgU-Jx-qCXESQx/exec"; 
     const ADMIN_PASSCODE = "kemenagbanten123";
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Event Listener Tombol Admin Panel
+      const navAdminBtn = document.getElementById('navAdminBtn');
+      if (navAdminBtn) {
+        navAdminBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          openLoginModal();
+        });
+      }
+
+      // Event Listener Form Login Admin
+      const loginForm = document.getElementById('loginForm');
+      if (loginForm) {
+        loginForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          const pass = document.getElementById('adminPass').value;
+          if (pass === ADMIN_PASSCODE) {
+            closeLoginModal();
+            showAdminDashboard();
+          } else {
+            document.getElementById('loginError').style.display = 'block';
+          }
+        });
+      }
+
+      // Event Listener Form Pengiriman Buku Tamu
+      const guestForm = document.getElementById('guestForm');
+      if (guestForm) {
+        guestForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          const submitBtn = document.getElementById('submitBtn');
+          const statusAlert = document.getElementById('statusAlert');
+          
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim Data...';
+          
+          statusAlert.className = 'status-alert';
+          statusAlert.style.display = 'none';
+
+          const formData = new URLSearchParams();
+          formData.append('nama', document.getElementById('nama').value);
+          formData.append('instansi', document.getElementById('instansi').value);
+          formData.append('unitKerja', document.getElementById('unitKerja').value);
+          formData.append('telepon', document.getElementById('telepon').value);
+          formData.append('email', document.getElementById('email').value || '-');
+          formData.append('keperluan', document.getElementById('keperluan').value);
+          formData.append('pesan', document.getElementById('pesan').value || '-');
+          formData.append('persetujuan', document.getElementById('persetujuan').checked ? 'Setuju' : 'Tidak');
+
+          fetch(SCRIPT_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formData.toString()
+          })
+          .then(res => res.json())
+          .then(res => {
+            document.getElementById('guestForm').reset();
+            document.getElementById('successModal').classList.add('active');
+          })
+          .catch(err => {
+            statusAlert.className = 'status-alert error';
+            statusAlert.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Terjadi kesalahan saat menyimpan data. Pastikan Web App diset ke "Anyone".';
+            statusAlert.style.display = 'block';
+          })
+          .finally(() => {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Data Kunjungan';
+          });
+        });
+      }
+    });
+
+    function openLoginModal() {
+      const modal = document.getElementById('loginModal');
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeLoginModal() {
+      const modal = document.getElementById('loginModal');
+      if (modal) {
+        modal.classList.remove('active');
+        document.getElementById('loginError').style.display = 'none';
+        document.getElementById('adminPass').value = '';
+      }
+    }
 
     function closeSuccessModal() {
       document.getElementById('successModal').classList.remove('active');
     }
-
-    document.getElementById('guestForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      const submitBtn = document.getElementById('submitBtn');
-      const statusAlert = document.getElementById('statusAlert');
-      
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim Data...';
-      
-      statusAlert.className = 'status-alert';
-      statusAlert.style.display = 'none';
-
-      const formData = new URLSearchParams();
-      formData.append('nama', document.getElementById('nama').value);
-      formData.append('instansi', document.getElementById('instansi').value);
-      formData.append('unitKerja', document.getElementById('unitKerja').value); // Pengiriman Parameter Baru
-      formData.append('telepon', document.getElementById('telepon').value);
-      formData.append('email', document.getElementById('email').value || '-');
-      formData.append('keperluan', document.getElementById('keperluan').value);
-      formData.append('pesan', document.getElementById('pesan').value || '-');
-      formData.append('persetujuan', document.getElementById('persetujuan').checked ? 'Setuju' : 'Tidak');
-
-      fetch(SCRIPT_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: formData.toString()
-      })
-      .then(res => res.json())
-      .then(res => {
-        document.getElementById('guestForm').reset();
-        document.getElementById('successModal').classList.add('active');
-      })
-      .catch(err => {
-        statusAlert.className = 'status-alert error';
-        statusAlert.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Terjadi kesalahan saat menyimpan data. Silakan pastikan Web App sudah diset ke "Anyone".';
-        statusAlert.style.display = 'block';
-      })
-      .finally(() => {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Data Kunjungan';
-      });
-    });
-
-    function openLoginModal() {
-      document.getElementById('loginModal').classList.add('active');
-    }
-
-    function closeLoginModal() {
-      document.getElementById('loginModal').classList.remove('active');
-      document.getElementById('loginError').style.display = 'none';
-      document.getElementById('adminPass').value = '';
-    }
-
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const pass = document.getElementById('adminPass').value;
-      if (pass === ADMIN_PASSCODE) {
-        closeLoginModal();
-        showAdminDashboard();
-      } else {
-        document.getElementById('loginError').style.display = 'block';
-      }
-    });
 
     function showAdminDashboard() {
       document.getElementById('guestFormView').style.display = 'none';
