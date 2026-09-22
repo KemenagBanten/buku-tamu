@@ -721,7 +721,7 @@
       const month = document.getElementById('filterMonth').value;
       const year = document.getElementById('filterYear').value;
 
-      let fetchUrl = SCRIPT_URL + '?action=get&month=all&year=all';
+      let fetchUrl = SCRIPT_URL + '?action=get&month=' + month + '&year=' + year;
 
       fetch(fetchUrl)
       .then(res => res.json())
