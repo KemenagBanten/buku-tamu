@@ -86,6 +86,20 @@
     tr:hover{background:var(--light-green)}
     .badge-check{background:#dcfce7;color:#166534;padding:4px 8px;border-radius:4px;font-weight:600;font-size:11px}
     footer{text-align:center;padding:20px;font-size:12px;color:var(--text-muted);margin-top:auto}
+    .export-btn{background:#e8f5e9!important;color:#176b3a!important;border:1px solid #b7dfc4!important}
+    .export-btn:hover{filter:brightness(.97)}
+    @media print{
+      body{background:#fff!important;color:#111!important}
+      header,nav,.dashboard-header .btn-logout,.filter-controls,.modal-overlay,footer,#guestFormView,.analytics-grid,.stats-grid{display:none!important}
+      #adminDashboardView{display:block!important}
+      .card,.card-body{box-shadow:none!important;border:0!important;padding:0!important}
+      .filter-bar{border:0!important;background:#fff!important;padding:0!important}
+      .table-responsive{overflow:visible!important}
+      table{width:100%!important;border-collapse:collapse!important;font-size:8pt!important}
+      th,td{border:1px solid #777!important;padding:4px!important;white-space:normal!important}
+      th{background:#eee!important;color:#111!important}
+      @page{size:landscape;margin:10mm}
+    }
     @media(max-width:900px){.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media(max-width:640px){
       .navbar{padding:12px;align-items:flex-start}.brand img{height:34px}.brand-text h1{font-size:10px;line-height:1.4}.brand-text p{font-size:9px}
@@ -173,6 +187,10 @@
             </select>
             <select id="filterYear" class="form-control"><option value="all">Semua Tahun</option><option value="2025">2025</option><option value="2026" selected>2026</option><option value="2027">2027</option></select>
             <button onclick="fetchGuestData()" class="nav-btn" style="background:var(--primary-green);border:none"><i class="fa-solid fa-magnifying-glass"></i> Terapkan</button>
+          </div>
+          <div class="filter-controls export-controls">
+            <button type="button" class="nav-btn export-btn" onclick="exportCSV()"><i class="fa-solid fa-file-excel"></i> Ekspor Excel (CSV)</button>
+            <button type="button" class="nav-btn export-btn" onclick="exportPDF()"><i class="fa-solid fa-file-pdf"></i> Cetak / Simpan PDF</button>
           </div>
           <span class="total-label" id="totalRecords">Total Tamu: 0</span>
         </div>
@@ -320,6 +338,29 @@
       });
       const unitEntries = Object.entries(unitMap).map(([label,count])=>({label,count})).sort((a,b)=>b.count-a.count).slice(0,5);
       renderBars('unitChart',unitEntries,'Belum ada data tujuan unit kerja.');
+    }
+
+    function getExportRows(){
+      return Array.from(document.querySelectorAll('#guestTableBody tr')).filter(tr => tr.cells.length === 9)
+        .map(tr => Array.from(tr.cells).map(td => (td.innerText || '').trim()));
+    }
+    function exportCSV(){
+      const rows = getExportRows();
+      if(!rows.length){alert('Tidak ada data pada tabel untuk diekspor.');return;}
+      const headers = ['Timestamp','Nama Lengkap','Instansi/Asal','Tujuan Unit Kerja','Telepon','Email','Keperluan','Pesan','Persetujuan'];
+      const csvCell = value => '"' + String(value ?? '').replace(/"/g,'""') + '"';
+      const csv = '\\uFEFF' + [headers,...rows].map(row=>row.map(csvCell).join(';')).join('\\r\\n');
+      const blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const month = document.getElementById('filterMonth').value;
+      const year = document.getElementById('filterYear').value;
+      a.href=url;a.download='laporan_buku_tamu_'+year+'_'+month+'.csv';
+      document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+    }
+    function exportPDF(){
+      if(!getExportRows().length){alert('Tidak ada data pada tabel untuk dicetak.');return;}
+      window.print();
     }
 
     async function fetchGuestData(){
