@@ -3,758 +3,364 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Buku Tamu - Kanwil Kementerian Agama Provinsi Banten</title>
+  <title>Buku Tamu Digital - Kanwil Kemenag Banten</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
-      --primary-green: #0b6623;
-      --dark-green: #064016;
-      --light-green: #eef7f2;
-      --accent-gold: #d4af37;
-      --gold-hover: #b89628;
-      --bg-gradient: linear-gradient(135deg, #f4f8f5 0%, #e5efe9 100%);
-      --card-bg: #ffffff;
-      --text-main: #1e293b;
-      --text-muted: #64748b;
-      --border-color: #cbd5e1;
-      --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-      --shadow-lg: 0 10px 25px -5px rgba(11, 102, 35, 0.1);
+      --primary-green:#0b6623; --dark-green:#064016; --light-green:#eef7f2;
+      --accent-gold:#d4af37; --bg-gradient:linear-gradient(135deg,#f4f8f5 0%,#e5efe9 100%);
+      --card-bg:#fff; --text-main:#1e293b; --text-muted:#64748b;
+      --border-color:#cbd5e1; --shadow-sm:0 4px 6px -1px rgba(0,0,0,.05);
+      --shadow-lg:0 10px 25px -5px rgba(11,102,35,.1);
     }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: var(--bg-gradient);
-      color: var(--text-main);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .navbar {
-      background-color: var(--dark-green);
-      border-bottom: 3px solid var(--accent-gold);
-      padding: 12px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: white;
-      text-decoration: none;
-    }
-
-    .brand img { height: 42px; width: auto; }
-
-    .brand-text h1 {
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-
-    .brand-text p {
-      font-size: 11px;
-      color: var(--accent-gold);
-      font-weight: 500;
-    }
-
-    .nav-btn {
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
-      border: 1px solid rgba(212, 175, 55, 0.4);
-      padding: 8px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 600;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .nav-btn:hover {
-      background: var(--accent-gold);
-      color: var(--dark-green);
-    }
-
-    .main-container {
-      flex: 1;
-      max-width: 900px;
-      width: 100%;
-      margin: 30px auto;
-      padding: 0 20px;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border-radius: 12px;
-      box-shadow: var(--shadow-lg);
-      border: 1px solid rgba(11, 102, 35, 0.1);
-      overflow: hidden;
-    }
-
-    .card-header {
-      background: linear-gradient(135deg, var(--dark-green), var(--primary-green));
-      color: white;
-      padding: 30px 25px;
-      text-align: center;
-      position: relative;
-    }
-
-    .card-header::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 4px;
-      background: var(--accent-gold);
-    }
-
-    .header-logo {
-      width: 80px;
-      height: auto;
-      margin-bottom: 12px;
-      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
-    }
-
-    .card-header h2 { font-size: 22px; font-weight: 700; }
-    .card-header p { font-size: 13px; opacity: 0.9; margin-top: 4px; }
-    .card-body { padding: 30px; }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-    .full-width { grid-column: span 2; }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .form-group label {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-main);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .form-group label i { color: var(--primary-green); font-size: 14px; }
-
-    .form-control {
-      width: 100%;
-      padding: 10px 14px;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      font-size: 14px;
-      font-family: inherit;
-      transition: all 0.2s;
-      background-color: #f8fafc;
-    }
-
-    .form-control:focus {
-      outline: none;
-      border-color: var(--primary-green);
-      background-color: #fff;
-      box-shadow: 0 0 0 3px rgba(11, 102, 35, 0.15);
-    }
-
-    textarea.form-control { min-height: 80px; resize: vertical; }
-
-    .checkbox-box {
-      background: var(--light-green);
-      border: 1px solid rgba(11, 102, 35, 0.2);
-      border-radius: 8px;
-      padding: 14px;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-    }
-
-    .checkbox-box input[type="checkbox"] {
-      width: 18px; height: 18px;
-      accent-color: var(--primary-green);
-      margin-top: 2px;
-      cursor: pointer;
-    }
-
-    .checkbox-box label {
-      font-size: 13px;
-      color: var(--dark-green);
-      line-height: 1.4;
-      font-weight: 500;
-      cursor: pointer;
-    }
-
-    .btn-submit {
-      width: 100%;
-      background: linear-gradient(135deg, var(--accent-gold), var(--gold-hover));
-      color: var(--dark-green);
-      font-weight: 700;
-      font-size: 15px;
-      padding: 14px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
-    }
-
-    .btn-submit:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 15px rgba(212, 175, 55, 0.4);
-    }
-
-    .btn-submit:disabled {
-      background: #cbd5e1;
-      color: #94a3b8;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
-
-    .status-alert {
-      margin-top: 15px;
-      padding: 12px;
-      border-radius: 6px;
-      font-size: 14px;
-      text-align: center;
-      display: none;
-    }
-
-    .status-alert.error {
-      background-color: #f8d7da;
-      color: #842029;
-      border: 1px solid #f5c2c7;
-      display: block;
-    }
-
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(4px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.3s ease;
-    }
-
-    .modal-overlay.active { opacity: 1; pointer-events: auto; }
-
-    .modal-card {
-      background: white;
-      width: 100%;
-      max-width: 400px;
-      border-radius: 12px;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
-      overflow: hidden;
-      transform: scale(0.9);
-      transition: transform 0.3s ease;
-    }
-
-    .modal-overlay.active .modal-card { transform: scale(1); }
-
-    .modal-header {
-      background: var(--dark-green);
-      color: white;
-      padding: 18px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .modal-header h3 { font-size: 16px; font-weight: 700; }
-    .close-btn { background: transparent; border: none; color: white; font-size: 18px; cursor: pointer; }
-    .modal-body { padding: 20px; }
-
-    .btn-login {
-      width: 100%;
-      background: var(--primary-green);
-      color: white;
-      padding: 10px;
-      border: none;
-      border-radius: 6px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-
-    .btn-login:hover { background: var(--dark-green); }
-
-    #adminDashboardView { display: none; }
-
-    .dashboard-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .dashboard-title h2 { font-size: 20px; color: var(--dark-green); }
-    .dashboard-title p { font-size: 13px; color: var(--text-muted); }
-
-    .btn-logout {
-      background: #ef4444;
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 6px;
-      font-weight: 600;
-      cursor: pointer;
-      font-size: 13px;
-    }
-
-    .table-responsive {
-      overflow-x: auto;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
-      font-size: 13px;
-    }
-
-    th {
-      background: var(--dark-green);
-      color: white;
-      text-align: left;
-      padding: 12px 14px;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-
-    td {
-      padding: 12px 14px;
-      border-bottom: 1px solid #f1f5f9;
-      color: var(--text-main);
-    }
-
-    tr:hover { background-color: var(--light-green); }
-
-    .badge-check {
-      background: #dcfce7;
-      color: #166534;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-weight: 600;
-      font-size: 11px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: auto;
-    }
-
-    @media (max-width: 640px) {
-      .form-grid { grid-template-columns: 1fr; }
-      .full-width { grid-column: span 1; }
-      .brand-text h1 { font-size: 11px; }
-      .brand-text p { font-size: 9px; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg-gradient);color:var(--text-main);min-height:100vh;display:flex;flex-direction:column}
+    .navbar{background:var(--dark-green);border-bottom:3px solid var(--accent-gold);padding:12px 24px;display:flex;justify-content:space-between;align-items:center;gap:12px;box-shadow:var(--shadow-sm)}
+    .brand{display:flex;align-items:center;gap:12px;color:white;text-decoration:none;min-width:0}
+    .brand img{height:42px;width:auto}
+    .brand-text h1{font-size:15px;font-weight:700;letter-spacing:.3px;text-transform:uppercase}
+    .brand-text p{font-size:11px;color:var(--accent-gold);font-weight:500}
+    .nav-btn{background:rgba(255,255,255,.1);color:white;border:1px solid rgba(212,175,55,.4);padding:8px 16px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px}
+    .nav-btn:hover{background:var(--accent-gold);color:var(--dark-green)}
+    .main-container{flex:1;max-width:1200px;width:100%;margin:30px auto;padding:0 20px}
+    .card{background:var(--card-bg);border-radius:12px;box-shadow:var(--shadow-lg);border:1px solid rgba(11,102,35,.1);overflow:hidden}
+    .card-header{background:linear-gradient(135deg,var(--dark-green),var(--primary-green));color:white;padding:30px 25px;text-align:center;position:relative}
+    .card-header:after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:var(--accent-gold)}
+    .header-logo{width:80px;height:auto;margin-bottom:12px;filter:drop-shadow(0 4px 6px rgba(0,0,0,.2))}
+    .card-header h2{font-size:22px;font-weight:700}.card-header p{font-size:13px;opacity:.9;margin-top:4px}
+    .card-body{padding:25px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.full-width{grid-column:span 2}
+    .form-group{display:flex;flex-direction:column;gap:6px}
+    .form-group label{font-size:13px;font-weight:600;color:var(--text-main);display:flex;align-items:center;gap:6px}
+    .form-group label i{color:var(--primary-green);font-size:14px}
+    .form-control{width:100%;padding:10px 14px;border:1px solid var(--border-color);border-radius:6px;font-size:14px;font-family:inherit;background:#f8fafc}
+    .form-control:focus{outline:none;border-color:var(--primary-green);background:#fff;box-shadow:0 0 0 3px rgba(11,102,35,.15)}
+    textarea.form-control{min-height:80px;resize:vertical}
+    .checkbox-box{background:var(--light-green);border:1px solid rgba(11,102,35,.2);border-radius:8px;padding:14px;display:flex;align-items:flex-start;gap:12px}
+    .checkbox-box input{width:18px;height:18px;accent-color:var(--primary-green);margin-top:2px}
+    .checkbox-box label{font-size:13px;color:var(--dark-green);line-height:1.4;font-weight:500}
+    .btn-submit{width:100%;background:linear-gradient(135deg,var(--accent-gold),#b89628);color:var(--dark-green);font-weight:700;font-size:15px;padding:14px;border:0;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+    .btn-submit:disabled{background:#cbd5e1;color:#64748b;cursor:not-allowed}
+    .status-alert{margin-top:15px;padding:12px;border-radius:6px;font-size:14px;text-align:center;display:none}
+    .status-alert.error{background:#f8d7da;color:#842029;border:1px solid #f5c2c7;display:block}
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;pointer-events:none;transition:all .3s}
+    .modal-overlay.active{opacity:1;pointer-events:auto}
+    .modal-card{background:white;width:calc(100% - 30px);max-width:400px;border-radius:12px;box-shadow:0 20px 25px -5px rgba(0,0,0,.2);overflow:hidden;transform:scale(.9);transition:transform .3s}
+    .modal-overlay.active .modal-card{transform:scale(1)}
+    .modal-header{background:var(--dark-green);color:white;padding:18px 20px;display:flex;justify-content:space-between;align-items:center}
+    .modal-header h3{font-size:16px}.close-btn{background:transparent;border:0;color:white;font-size:22px;cursor:pointer}
+    .modal-body{padding:20px}.btn-login{width:100%;background:var(--primary-green);color:white;padding:10px;border:0;border-radius:6px;font-weight:600;cursor:pointer;margin-top:10px}
+    #adminDashboardView{display:none}
+    .dashboard-header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}
+    .dashboard-title h2{font-size:20px;color:var(--dark-green)}.dashboard-title p{font-size:13px;color:var(--text-muted)}
+    .btn-logout{background:#ef4444;color:white;border:0;padding:8px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:13px}
+    .filter-bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px;background:#f8fafc;padding:12px;border-radius:8px;border:1px solid var(--border-color)}
+    .filter-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .filter-controls select{width:auto;padding:7px 10px;font-size:13px}
+    .total-label{font-size:13px;font-weight:700;color:var(--primary-green)}
+    .stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:0 0 20px}
+    .stat-card{background:#fff;border:1px solid rgba(11,102,35,.13);border-radius:12px;padding:18px;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:14px;min-width:0}
+    .stat-icon{width:46px;height:46px;flex:0 0 46px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--light-green);color:var(--primary-green);font-size:20px}
+    .stat-card:nth-child(2) .stat-icon{background:#fff7df;color:#9a7410}
+    .stat-card:nth-child(3) .stat-icon{background:#eaf2ff;color:#2458a6}
+    .stat-card:nth-child(4) .stat-icon{background:#f3e8ff;color:#7e22ce}
+    .stat-label{font-size:12px;color:var(--text-muted);margin-bottom:5px}
+    .stat-value{font-size:25px;font-weight:700;color:var(--dark-green);line-height:1.1;overflow-wrap:anywhere}
+    .stats-note{font-size:11px;color:var(--text-muted);margin-top:5px}
+    .analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+    .analytics-card{background:white;border:1px solid var(--border-color);border-radius:10px;padding:20px;min-width:0}
+    .analytics-card h3{font-size:15px;color:var(--dark-green);margin-bottom:5px}
+    .analytics-card .subheading{font-size:12px;color:var(--text-muted);margin-bottom:16px}
+    .chart-list{display:flex;flex-direction:column;gap:13px}
+    .chart-row{display:grid;grid-template-columns:minmax(90px, .9fr) minmax(60px,1.6fr) 34px;gap:10px;align-items:center;font-size:12px}
+    .chart-name{overflow-wrap:anywhere;color:#334155}
+    .bar-track{height:10px;background:#edf2ef;border-radius:20px;overflow:hidden}
+    .bar-fill{height:100%;background:linear-gradient(90deg,var(--primary-green),#55a96b);border-radius:20px;min-width:0}
+    .chart-count{text-align:right;font-weight:700;color:var(--dark-green)}
+    .empty-chart{font-size:13px;color:var(--text-muted);padding:12px 0}
+    .table-responsive{overflow-x:auto;border-radius:8px;border:1px solid var(--border-color)}
+    table{width:100%;border-collapse:collapse;background:white;font-size:13px;min-width:950px}
+    th{background:var(--dark-green);color:white;text-align:left;padding:12px 14px;font-weight:600;white-space:nowrap}
+    td{padding:12px 14px;border-bottom:1px solid #f1f5f9;color:var(--text-main);vertical-align:top}
+    tr:hover{background:var(--light-green)}
+    .badge-check{background:#dcfce7;color:#166534;padding:4px 8px;border-radius:4px;font-weight:600;font-size:11px}
+    footer{text-align:center;padding:20px;font-size:12px;color:var(--text-muted);margin-top:auto}
+    @media(max-width:900px){.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:640px){
+      .navbar{padding:12px;align-items:flex-start}.brand img{height:34px}.brand-text h1{font-size:10px;line-height:1.4}.brand-text p{font-size:9px}
+      .nav-btn{font-size:11px;padding:8px}.main-container{margin:18px auto;padding:0 12px}
+      .form-grid{grid-template-columns:1fr}.full-width{grid-column:span 1}.card-body{padding:18px}
+      .card-header{padding:24px 15px}.card-header h2{font-size:20px}
+      .dashboard-header{align-items:flex-start;flex-direction:column}.stats-grid{gap:10px}
+      .stat-card{padding:13px;gap:10px}.stat-icon{width:36px;height:36px;flex-basis:36px;font-size:16px;border-radius:9px}
+      .stat-value{font-size:21px}.stat-label{font-size:11px}
+      .analytics-grid{grid-template-columns:1fr}.filter-controls{width:100%}.filter-controls select{flex:1;min-width:110px}
+      .filter-controls .nav-btn{justify-content:center}.filter-bar{align-items:flex-start}
     }
   </style>
 </head>
 <body>
-
   <nav class="navbar">
     <a href="#" class="brand">
       <img src="https://cms2023.kemenag.go.id/storage/files/shares/Logo/Kementerian_Agama_new_logo%20(2).png" alt="Logo Kemenag">
-      <div class="brand-text">
-        <h1>Kanwil Kementerian Agama Provinsi Banten</h1>
-        <p>Pelayanan Terpadu Satu Pintu</p>
-      </div>
+      <div class="brand-text"><h1>Kanwil Kementerian Agama Provinsi Banten</h1><p>Pelayanan Terpadu Satu Pintu</p></div>
     </a>
-    <button class="nav-btn" id="navAdminBtn">
-      <i class="fa-solid fa-user-shield"></i> Admin Panel
-    </button>
+    <button class="nav-btn" id="navAdminBtn"><i class="fa-solid fa-user-shield"></i> Admin Panel</button>
   </nav>
 
-  <div class="main-container">
-
-    <!-- FORM TAMU -->
-    <div id="guestFormView">
+  <main class="main-container">
+    <section id="guestFormView">
       <div class="card">
         <div class="card-header">
           <img src="https://cms2023.kemenag.go.id/storage/files/shares/Logo/Kementerian_Agama_new_logo%20(2).png" class="header-logo" alt="Logo Kemenag">
-          <h2>Buku Tamu Digital</h2>
-          <p>Kantor Wilayah Kementerian Agama Provinsi Banten</p>
+          <h2>Buku Tamu Digital</h2><p>Kantor Wilayah Kementerian Agama Provinsi Banten</p>
         </div>
         <div class="card-body">
-          <form id="guestForm">
-            <div class="form-grid">
-
-              <div class="form-group">
-                <label for="nama"><i class="fa-solid fa-user"></i> Nama Lengkap *</label>
-                <input type="text" id="nama" class="form-control" placeholder="Masukkan nama lengkap Anda" required>
-              </div>
-
-              <div class="form-group">
-                <label for="instansi"><i class="fa-solid fa-building"></i> Instansi / Asal *</label>
-                <input type="text" id="instansi" class="form-control" placeholder="Contoh: KUA Serang / Umum" required>
-              </div>
-
-              <!-- DROPDOWN TUJUAN UNIT KERJA -->
-              <div class="form-group full-width">
-                <label for="unitKerja"><i class="fa-solid fa-sitemap"></i> Tujuan Unit Kerja *</label>
-                <select id="unitKerja" class="form-control" required>
-                  <option value="" disabled selected>-- Pilih Tujuan Unit Kerja --</option>
-                  <option value="Sekretariat">Sekretariat</option>
-                  <option value="Bidang Pendidikan Madrasah">Bidang Pendidikan Madrasah</option>
-                  <option value="Bidang Urusan Agam Islam">Bidang Urusan Agam Islam</option>
-                  <option value="Bidang Pendidikan Agama dan Keagamaan Islam">Bidang Pendidikan Agama dan Keagamaan Islam</option>
-                  <option value="Bidang Penerangan Agama Islam dan Bina Penyelenggara Zakat dan Wakaf">Bidang Penerangan Agama Islam dan Bina Penyelenggara Zakat dan Wakaf</option>
-                  <option value="Bimbingan Masyarakat Kristen">Bimbingan Masyarakat Kristen</option>
-                  <option value="Bimbingan Masyarakat Katolik">Bimbingan Masyarakat Katolik</option>
-                  <option value="Bimbingan Masyarakat Hindu">Bimbingan Masyarakat Hindu</option>
-                  <option value="Bimbingan Masyarakat Buddha">Bimbingan Masyarakat Buddha</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label for="telepon"><i class="fa-solid fa-phone"></i> WhatsApp / Telepon *</label>
-                <input type="tel" id="telepon" class="form-control" placeholder="08xxxxxxxxxx" required>
-              </div>
-
-              <div class="form-group">
-                <label for="email"><i class="fa-solid fa-envelope"></i> Alamat Email</label>
-                <input type="email" id="email" class="form-control" placeholder="nama@email.com (Opsional)">
-              </div>
-
-              <div class="form-group full-width">
-                <label for="keperluan"><i class="fa-solid fa-clipboard-list"></i> Keperluan *</label>
-                <textarea id="keperluan" class="form-control" placeholder="Jelaskan maksud dan tujuan kunjungan Anda" required></textarea>
-              </div>
-
-              <div class="form-group full-width">
-                <label for="pesan"><i class="fa-solid fa-comment-dots"></i> Pesan / Kesan</label>
-                <textarea id="pesan" class="form-control" placeholder="Tuliskan pesan atau kesan Anda (Opsional)"></textarea>
-              </div>
-
-              <div class="form-group full-width">
-                <div class="checkbox-box">
-                  <input type="checkbox" id="persetujuan" required>
-                  <label for="persetujuan">
-                    Saya menyetujui bahwa data kunjungan ini dicatat pada Buku Tamu.
-                  </label>
-                </div>
-              </div>
-
-              <div class="form-group full-width">
-                <button type="submit" id="submitBtn" class="btn-submit">
-                  <i class="fa-solid fa-paper-plane"></i> Kirim 
-                </button>
-              </div>
-
+          <form id="guestForm"><div class="form-grid">
+            <div class="form-group"><label for="nama"><i class="fa-solid fa-user"></i> Nama Lengkap *</label><input type="text" id="nama" class="form-control" placeholder="Masukkan nama lengkap Anda" required></div>
+            <div class="form-group"><label for="instansi"><i class="fa-solid fa-building"></i> Instansi / Asal *</label><input type="text" id="instansi" class="form-control" placeholder="Contoh: KUA Serang / Umum" required></div>
+            <div class="form-group full-width"><label for="unitKerja"><i class="fa-solid fa-sitemap"></i> Tujuan Unit Kerja *</label>
+              <select id="unitKerja" class="form-control" required>
+                <option value="" disabled selected>-- Pilih Tujuan Unit Kerja --</option>
+                <option value="Sekretariat">Sekretariat</option>
+                <option value="Bidang Pendidikan Madrasah">Bidang Pendidikan Madrasah</option>
+                <option value="Bidang Urusan Agama Islam">Bidang Urusan Agama Islam</option>
+                <option value="Bidang Pendidikan Agama dan Keagamaan Islam">Bidang Pendidikan Agama dan Keagamaan Islam</option>
+                <option value="Bidang Penerangan Agama Islam dan Bina Penyelenggara Zakat dan Wakaf">Bidang Penerangan Agama Islam dan Bina Penyelenggara Zakat dan Wakaf</option>
+                <option value="Bimbingan Masyarakat Kristen">Bimbingan Masyarakat Kristen</option>
+                <option value="Bimbingan Masyarakat Katolik">Bimbingan Masyarakat Katolik</option>
+                <option value="Bimbingan Masyarakat Hindu">Bimbingan Masyarakat Hindu</option>
+                <option value="Bimbingan Masyarakat Buddha">Bimbingan Masyarakat Buddha</option>
+              </select>
             </div>
-          </form>
-
+            <div class="form-group"><label for="telepon"><i class="fa-solid fa-phone"></i> WhatsApp / Telepon *</label><input type="tel" id="telepon" class="form-control" placeholder="08xxxxxxxxxx" required></div>
+            <div class="form-group"><label for="email"><i class="fa-solid fa-envelope"></i> Alamat Email</label><input type="email" id="email" class="form-control" placeholder="nama@email.com (Opsional)"></div>
+            <div class="form-group full-width"><label for="keperluan"><i class="fa-solid fa-clipboard-list"></i> Keperluan *</label><textarea id="keperluan" class="form-control" placeholder="Jelaskan maksud dan tujuan kunjungan Anda" required></textarea></div>
+            <div class="form-group full-width"><label for="pesan"><i class="fa-solid fa-comment-dots"></i> Pesan / Kesan</label><textarea id="pesan" class="form-control" placeholder="Tuliskan pesan atau kesan Anda (Opsional)"></textarea></div>
+            <div class="form-group full-width"><div class="checkbox-box"><input type="checkbox" id="persetujuan" required><label for="persetujuan">Saya menyetujui bahwa data kunjungan ini dicatat pada Buku Tamu.</label></div></div>
+            <div class="form-group full-width"><button type="submit" id="submitBtn" class="btn-submit"><i class="fa-solid fa-paper-plane"></i> Kirim Data Kunjungan</button></div>
+          </div></form>
           <div id="statusAlert" class="status-alert"></div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- DASHBOARD ADMIN -->
-    <div id="adminDashboardView">
+    <section id="adminDashboardView">
       <div class="dashboard-header">
-        <div class="dashboard-title">
-          <h2><i class="fa-solid fa-gauge"></i> Dashboard Data Kunjungan</h2>
-          <p>Kanwil Kementerian Agama Provinsi Banten</p>
+        <div class="dashboard-title"><h2><i class="fa-solid fa-gauge"></i> Dashboard Data Kunjungan</h2><p>Kanwil Kementerian Agama Provinsi Banten</p></div>
+        <button class="btn-logout" onclick="logoutAdmin()"><i class="fa-solid fa-right-from-bracket"></i> Keluar Admin</button>
+      </div>
+
+      <div class="stats-grid">
+        <article class="stat-card"><div class="stat-icon"><i class="fa-solid fa-users"></i></div><div><div class="stat-label">Total Kunjungan</div><div class="stat-value" id="statTotal">0</div><div class="stats-note">Sesuai periode filter</div></div></article>
+        <article class="stat-card"><div class="stat-icon"><i class="fa-solid fa-calendar-day"></i></div><div><div class="stat-label">Kunjungan Hari Ini</div><div class="stat-value" id="statToday">0</div><div class="stats-note">Dari data yang dimuat</div></div></article>
+        <article class="stat-card"><div class="stat-icon"><i class="fa-solid fa-calendar-week"></i></div><div><div class="stat-label">Kunjungan Bulan Ini</div><div class="stat-value" id="statMonth">0</div><div class="stats-note">Dari data yang dimuat</div></div></article>
+        <article class="stat-card"><div class="stat-icon"><i class="fa-solid fa-building-user"></i></div><div><div class="stat-label">Asal/Instansi Berbeda</div><div class="stat-value" id="statInstitutions">0</div><div class="stats-note">Instansi unik pada data</div></div></article>
+      </div>
+
+      <div class="analytics-grid">
+        <article class="analytics-card"><h3><i class="fa-solid fa-chart-column"></i> Kunjungan per Bulan</h3><p class="subheading">Distribusi kunjungan dalam data sesuai filter.</p><div id="monthlyChart" class="chart-list"><div class="empty-chart">Data akan ditampilkan setelah dimuat.</div></div></article>
+        <article class="analytics-card"><h3><i class="fa-solid fa-chart-pie"></i> Tujuan Unit Kerja Terbanyak</h3><p class="subheading">Unit kerja yang paling sering dipilih pengunjung.</p><div id="unitChart" class="chart-list"><div class="empty-chart">Data akan ditampilkan setelah dimuat.</div></div></article>
+      </div>
+
+      <div class="card"><div class="card-body">
+        <div class="filter-bar">
+          <div class="filter-controls">
+            <i class="fa-solid fa-filter" style="color:var(--primary-green)" title="Filter Data"></i>
+            <select id="filterMonth" class="form-control">
+              <option value="all">Semua Bulan</option><option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option><option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option><option value="7">Juli</option><option value="8">Agustus</option><option value="9">September</option><option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option>
+            </select>
+            <select id="filterYear" class="form-control"><option value="all">Semua Tahun</option><option value="2025">2025</option><option value="2026" selected>2026</option><option value="2027">2027</option></select>
+            <button onclick="fetchGuestData()" class="nav-btn" style="background:var(--primary-green);border:none"><i class="fa-solid fa-magnifying-glass"></i> Terapkan</button>
+          </div>
+          <span class="total-label" id="totalRecords">Total Tamu: 0</span>
         </div>
-        <button class="btn-logout" onclick="logoutAdmin()">
-          <i class="fa-solid fa-right-from-bracket"></i> Keluar Admin
-        </button>
-      </div>
+        <div class="table-responsive"><table>
+          <thead><tr><th>Timestamp</th><th>Nama Lengkap</th><th>Instansi/Asal</th><th>Tujuan Unit Kerja</th><th>Telepon</th><th>Email</th><th>Keperluan</th><th>Pesan</th><th>Persetujuan</th></tr></thead>
+          <tbody id="guestTableBody"><tr><td colspan="9" style="text-align:center;color:var(--text-muted)">Memuat data...</td></tr></tbody>
+        </table></div>
+      </div></div>
+    </section>
+  </main>
 
-      <div class="card">
-        <div class="card-body">
-          
-          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 20px; background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
-            
-            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-              <i class="fa-solid fa-filter" style="color: var(--primary-green); font-size: 16px; margin-right: 4px;" title="Filter Data"></i>
-              
-              <select id="filterMonth" class="form-control" style="width: auto; padding: 6px 12px; font-size: 13px;">
-                <option value="all">Semua Bulan</option>
-                <option value="1">Januari</option>
-                <option value="2">Februari</option>
-                <option value="3">Maret</option>
-                <option value="4">April</option>
-                <option value="5">Mei</option>
-                <option value="6">Juni</option>
-                <option value="7">Juli</option>
-                <option value="8">Agustus</option>
-                <option value="9">September</option>
-                <option value="10">Oktober</option>
-                <option value="11">November</option>
-                <option value="12">Desember</option>
-              </select>
+  <div class="modal-overlay" id="loginModal"><div class="modal-card">
+    <div class="modal-header"><h3><i class="fa-solid fa-lock"></i> Login Admin Buku Tamu</h3><button class="close-btn" onclick="closeLoginModal()">&times;</button></div>
+    <div class="modal-body"><form id="loginForm">
+      <div class="form-group" style="margin-bottom:15px"><label for="adminPass"><i class="fa-solid fa-key"></i> Passcode Admin</label><input type="password" id="adminPass" class="form-control" placeholder="Masukkan password admin" required></div>
+      <div id="loginError" style="color:#ef4444;font-size:12px;margin-bottom:10px;display:none">Password salah! Silakan coba lagi.</div>
+      <button type="submit" class="btn-login">Masuk Dashboard</button>
+    </form></div>
+  </div></div>
 
-              <select id="filterYear" class="form-control" style="width: auto; padding: 6px 12px; font-size: 13px;">
-                <option value="all">Semua Tahun</option>
-                <option value="2025">2025</option>
-                <option value="2026" selected>2026</option>
-                <option value="2027">2027</option>
-              </select>
-
-              <button onclick="fetchGuestData()" class="nav-btn" style="background: var(--primary-green); border: none; padding: 7px 14px;">
-                <i class="fa-solid fa-magnifying-glass"></i> Terapkan
-              </button>
-            </div>
-
-            <span style="font-size: 13px; font-weight: 700; color: var(--primary-green);" id="totalRecords">
-              Total Tamu: 0
-            </span>
-          </div>
-
-          <div class="table-responsive">
-            <table>
-              <thead>
-                <tr>
-                  <th>Timestamp</th>
-                  <th>Nama Lengkap</th>
-                  <th>Instansi/Asal</th>
-                  <th>Tujuan Unit Kerja</th>
-                  <th>Telepon</th>
-                  <th>Email</th>
-                  <th>Keperluan</th>
-                  <th>Pesan</th>
-                  <th>Persetujuan</th>
-                </tr>
-              </thead>
-              <tbody id="guestTableBody">
-                <tr>
-                  <td colspan="9" style="text-align: center; color: var(--text-muted);">Memuat data...</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- MODAL LOGIN ADMIN -->
-  <div class="modal-overlay" id="loginModal">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h3><i class="fa-solid fa-lock"></i> Login Admin Buku Tamu</h3>
-        <button class="close-btn" onclick="closeLoginModal()">&times;</button>
-      </div>
-      <div class="modal-body">
-        <form id="loginForm">
-          <div class="form-group" style="margin-bottom: 15px;">
-            <label for="adminPass"><i class="fa-solid fa-key"></i> Passcode Admin</label>
-            <input type="password" id="adminPass" class="form-control" placeholder="Masukkan password admin" required>
-          </div>
-          <div id="loginError" style="color: #ef4444; font-size: 12px; margin-bottom: 10px; display: none;">
-            Password salah! Silakan coba lagi.
-          </div>
-          <button type="submit" class="btn-login">Masuk Dashboard</button>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL NOTIFIKASI SUKSES -->
-  <div class="modal-overlay" id="successModal">
-    <div class="modal-card" style="text-align: center; padding: 25px;">
-      <div style="font-size: 50px; color: #10b981; margin-bottom: 15px;">
-        <i class="fa-solid fa-circle-check"></i>
-      </div>
-      <h3 style="color: var(--dark-green); margin-bottom: 10px; font-size: 20px;">Berhasil Terkirim!</h3>
-      <p style="font-size: 14px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;">
-        Terima kasih, data kunjungan Anda telah berhasil tersimpan di sistem Buku Tamu Kanwil Kemenag Banten.
-      </p>
-      <button onclick="closeSuccessModal()" class="btn-submit" style="padding: 10px 20px;">
-        Tutup
-      </button>
-    </div>
-  </div>
-
-  <footer>
-    &copy; Kantor Wilayah Kementerian Agama Provinsi Banten. All Rights Reserved.
-  </footer>
+  <div class="modal-overlay" id="successModal"><div class="modal-card" style="text-align:center;padding:25px">
+    <div style="font-size:50px;color:#10b981;margin-bottom:15px"><i class="fa-solid fa-circle-check"></i></div>
+    <h3 style="color:var(--dark-green);margin-bottom:10px;font-size:20px">Berhasil Terkirim!</h3>
+    <p style="font-size:14px;color:var(--text-muted);line-height:1.5;margin-bottom:20px">Terima kasih, data kunjungan Anda telah dikirim ke sistem Buku Tamu Kanwil Kemenag Banten.</p>
+    <button onclick="closeSuccessModal()" class="btn-submit" style="padding:10px 20px">Tutup</button>
+  </div></div>
+  <footer>&copy; Kantor Wilayah Kementerian Agama Provinsi Banten. All Rights Reserved.</footer>
 
   <script>
-    // URL Web App Google Apps Script Terbaru Anda
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_Md4j_xoxSKv7zaFeKdIWh3HN9_lBhbn9VmszSWhyySVFSNxw-8pgU-Jx-qCXESQx/exec"; 
+    // Pertahankan URL Web App Google Apps Script yang digunakan sistem saat ini.
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_Md4j_xoxSKv7zaFeKdIWh3HN9_lBhbn9VmszSWhyySVFSNxw-8pgU-Jx-qCXESQx/exec";
+    // Catatan keamanan: pemeriksaan password di HTML sisi klien bukan pengamanan kuat.
+    // Gunakan autentikasi sisi server sebelum sistem dipakai untuk data sensitif.
     const ADMIN_PASSCODE = "kemenagbanten123";
+    const MONTH_NAMES = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
 
-    document.addEventListener('DOMContentLoaded', function() {
-      // Event Listener Tombol Admin Panel
-      const navAdminBtn = document.getElementById('navAdminBtn');
-      if (navAdminBtn) {
-        navAdminBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          openLoginModal();
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('navAdminBtn').addEventListener('click', openLoginModal);
+      document.getElementById('loginForm').addEventListener('submit', e => {
+        e.preventDefault();
+        if (document.getElementById('adminPass').value === ADMIN_PASSCODE) {
+          closeLoginModal(); showAdminDashboard();
+        } else document.getElementById('loginError').style.display = 'block';
+      });
+
+      document.getElementById('guestForm').addEventListener('submit', async e => {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        const alertBox = document.getElementById('statusAlert');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim Data...';
+        alertBox.className = 'status-alert'; alertBox.style.display = 'none';
+
+        const formData = new URLSearchParams();
+        ['nama','instansi','unitKerja','telepon','email','keperluan','pesan'].forEach(id => {
+          const el = document.getElementById(id);
+          formData.append(id, el.value.trim() || (id === 'email' || id === 'pesan' ? '-' : ''));
         });
-      }
+        formData.append('persetujuan', document.getElementById('persetujuan').checked ? 'Setuju' : 'Tidak');
 
-      // Event Listener Form Login Admin
-      const loginForm = document.getElementById('loginForm');
-      if (loginForm) {
-        loginForm.addEventListener('submit', function(e) {
-          e.preventDefault();
-          const pass = document.getElementById('adminPass').value;
-          if (pass === ADMIN_PASSCODE) {
-            closeLoginModal();
-            showAdminDashboard();
-          } else {
-            document.getElementById('loginError').style.display = 'block';
-          }
-        });
-      }
-
-      // Event Listener Form Pengiriman Buku Tamu
-      const guestForm = document.getElementById('guestForm');
-      if (guestForm) {
-        guestForm.addEventListener('submit', function(e) {
-          e.preventDefault();
-          
-          const submitBtn = document.getElementById('submitBtn');
-          const statusAlert = document.getElementById('statusAlert');
-          
-          submitBtn.disabled = true;
-          submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim Data...';
-          
-          statusAlert.className = 'status-alert';
-          statusAlert.style.display = 'none';
-
-          const formData = new URLSearchParams();
-          formData.append('nama', document.getElementById('nama').value);
-          formData.append('instansi', document.getElementById('instansi').value);
-          formData.append('unitKerja', document.getElementById('unitKerja').value);
-          formData.append('telepon', document.getElementById('telepon').value);
-          formData.append('email', document.getElementById('email').value || '-');
-          formData.append('keperluan', document.getElementById('keperluan').value);
-          formData.append('pesan', document.getElementById('pesan').value || '-');
-          formData.append('persetujuan', document.getElementById('persetujuan').checked ? 'Setuju' : 'Tidak');
-
-          fetch(SCRIPT_URL, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: formData.toString()
-          })
-          .then(res => res.json())
-          .then(res => {
-            document.getElementById('guestForm').reset();
-            document.getElementById('successModal').classList.add('active');
-          })
-          .catch(err => {
-            statusAlert.className = 'status-alert error';
-            statusAlert.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Terjadi kesalahan saat menyimpan data. Pastikan Web App diset ke "Anyone".';
-            statusAlert.style.display = 'block';
-          })
-          .finally(() => {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Data Kunjungan';
-          });
-        });
-      }
+        try {
+          const response = await fetch(SCRIPT_URL, {method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:formData.toString()});
+          if (!response.ok) throw new Error('HTTP ' + response.status);
+          await response.json();
+          document.getElementById('guestForm').reset();
+          document.getElementById('successModal').classList.add('active');
+        } catch (err) {
+          alertBox.className = 'status-alert error';
+          alertBox.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Terjadi kesalahan saat menyimpan data. Periksa URL Web App dan pengaturan aksesnya.';
+          alertBox.style.display = 'block';
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Data Kunjungan';
+        }
+      });
     });
 
-    function openLoginModal() {
-      const modal = document.getElementById('loginModal');
-      if (modal) modal.classList.add('active');
+    function openLoginModal(){document.getElementById('loginModal').classList.add('active')}
+    function closeLoginModal(){
+      document.getElementById('loginModal').classList.remove('active');
+      document.getElementById('loginError').style.display='none';
+      document.getElementById('adminPass').value='';
     }
-
-    function closeLoginModal() {
-      const modal = document.getElementById('loginModal');
-      if (modal) {
-        modal.classList.remove('active');
-        document.getElementById('loginError').style.display = 'none';
-        document.getElementById('adminPass').value = '';
-      }
-    }
-
-    function closeSuccessModal() {
-      document.getElementById('successModal').classList.remove('active');
-    }
-
-    function showAdminDashboard() {
-      document.getElementById('guestFormView').style.display = 'none';
-      document.getElementById('adminDashboardView').style.display = 'block';
-      document.getElementById('navAdminBtn').style.display = 'none';
+    function closeSuccessModal(){document.getElementById('successModal').classList.remove('active')}
+    function showAdminDashboard(){
+      document.getElementById('guestFormView').style.display='none';
+      document.getElementById('adminDashboardView').style.display='block';
+      document.getElementById('navAdminBtn').style.display='none';
       fetchGuestData();
     }
-
-    function logoutAdmin() {
-      document.getElementById('adminDashboardView').style.display = 'none';
-      document.getElementById('guestFormView').style.display = 'block';
-      document.getElementById('navAdminBtn').style.display = 'flex';
+    function logoutAdmin(){
+      document.getElementById('adminDashboardView').style.display='none';
+      document.getElementById('guestFormView').style.display='block';
+      document.getElementById('navAdminBtn').style.display='flex';
     }
 
-    function fetchGuestData() {
+    function parseDate(value){
+      if (!value) return null;
+      if (value instanceof Date && !isNaN(value)) return value;
+      const s = String(value).trim();
+      // Mendukung format timestamp umum: dd/mm/yyyy hh:mm dan format ISO.
+      const match = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
+      let d;
+      if (match) d = new Date(Number(match[3]), Number(match[2])-1, Number(match[1]), Number(match[4]||0), Number(match[5]||0));
+      else d = new Date(s);
+      return isNaN(d.getTime()) ? null : d;
+    }
+    function escapeHTML(value){
+      return String(value ?? '-').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+    }
+    function renderBars(containerId, entries, emptyText){
+      const container = document.getElementById(containerId);
+      if (!entries.length){container.innerHTML = '<div class="empty-chart">'+escapeHTML(emptyText)+'</div>';return;}
+      const max = Math.max(...entries.map(item=>item.count),1);
+      container.innerHTML = entries.map(item => {
+        const width = Math.max(0, Math.round(item.count/max*100));
+        return '<div class="chart-row"><div class="chart-name" title="'+escapeHTML(item.label)+'">'+escapeHTML(item.label)+'</div><div class="bar-track"><div class="bar-fill" style="width:'+width+'%"></div></div><div class="chart-count">'+item.count+'</div></div>';
+      }).join('');
+    }
+    function updateStatistics(data){
+      const now = new Date();
+      const todayCount = data.filter(row => {
+        const d = parseDate(row.timestamp);
+        return d && d.getFullYear()===now.getFullYear() && d.getMonth()===now.getMonth() && d.getDate()===now.getDate();
+      }).length;
+      const monthCount = data.filter(row => {
+        const d = parseDate(row.timestamp);
+        return d && d.getFullYear()===now.getFullYear() && d.getMonth()===now.getMonth();
+      }).length;
+      const institutions = new Set(data.map(row => String(row.instansi||'').trim().toLowerCase()).filter(Boolean));
+      document.getElementById('statTotal').textContent = data.length.toLocaleString('id-ID');
+      document.getElementById('statToday').textContent = todayCount.toLocaleString('id-ID');
+      document.getElementById('statMonth').textContent = monthCount.toLocaleString('id-ID');
+      document.getElementById('statInstitutions').textContent = institutions.size.toLocaleString('id-ID');
+
+      const monthlyCounts = Array(12).fill(0);
+      data.forEach(row => {const d=parseDate(row.timestamp);if(d)monthlyCounts[d.getMonth()]++;});
+      const monthlyEntries = monthlyCounts.map((count,i)=>({label:MONTH_NAMES[i],count})).filter(item=>item.count>0);
+      renderBars('monthlyChart',monthlyEntries,'Belum ada data tanggal untuk ditampilkan.');
+
+      const unitMap = {};
+      data.forEach(row => {
+        const unit = String(row.unitKerja||'').trim() || 'Tidak disebutkan';
+        unitMap[unit] = (unitMap[unit]||0)+1;
+      });
+      const unitEntries = Object.entries(unitMap).map(([label,count])=>({label,count})).sort((a,b)=>b.count-a.count).slice(0,5);
+      renderBars('unitChart',unitEntries,'Belum ada data tujuan unit kerja.');
+    }
+
+    async function fetchGuestData(){
       const tbody = document.getElementById('guestTableBody');
-      tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;"><i class="fa-solid fa-spinner fa-spin"></i> Memuat data dari Google Sheets...</td></tr>';
-      
+      tbody.innerHTML = '<tr><td colspan="9" style="text-align:center"><i class="fa-solid fa-spinner fa-spin"></i> Memuat data dari Google Sheets...</td></tr>';
       const month = document.getElementById('filterMonth').value;
       const year = document.getElementById('filterYear').value;
+      const fetchUrl = SCRIPT_URL + '?action=get&month=' + encodeURIComponent(month) + '&year=' + encodeURIComponent(year);
 
-      let fetchUrl = SCRIPT_URL + '?action=get&month=' + month + '&year=' + year;
+      try {
+        const response = await fetch(fetchUrl);
+        if (!response.ok) throw new Error('HTTP '+response.status);
+        const data = await response.json();
+        if (!Array.isArray(data)) throw new Error('Format data tidak sesuai');
+        document.getElementById('totalRecords').innerText = 'Total Tamu: ' + data.length.toLocaleString('id-ID');
+        updateStatistics(data);
 
-      fetch(fetchUrl)
-      .then(res => res.json())
-      .then(data => {
-        tbody.innerHTML = '';
-        
-        if (!Array.isArray(data) || data.length === 0) {
-          document.getElementById('totalRecords').innerText = 'Total Tamu: 0';
-          tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color: var(--text-muted);">Tidak ada data kunjungan pada periode ini.</td></tr>';
+        if (data.length===0){
+          tbody.innerHTML='<tr><td colspan="9" style="text-align:center;color:var(--text-muted)">Tidak ada data kunjungan pada periode ini.</td></tr>';
           return;
         }
-
-        document.getElementById('totalRecords').innerText = 'Total Tamu: ' + data.length;
-
-        data.forEach(row => {
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td>${row.timestamp || '-'}</td>
-            <td><b>${row.nama || '-'}</b></td>
-            <td>${row.instansi || '-'}</td>
-            <td>${row.unitKerja || '-'}</td>
-            <td>${row.telepon || '-'}</td>
-            <td>${row.email || '-'}</td>
-            <td>${row.keperluan || '-'}</td>
-            <td>${row.pesan || '-'}</td>
-            <td><span class="badge-check">${row.persetujuan || 'Setuju'}</span></td>
-          `;
+        tbody.innerHTML='';
+        data.forEach(row=>{
+          const tr=document.createElement('tr');
+          // Gunakan textContent agar isi data tidak dieksekusi sebagai HTML.
+          [row.timestamp,row.nama,row.instansi,row.unitKerja,row.telepon,row.email,row.keperluan,row.pesan,row.persetujuan||'Setuju'].forEach((value,index)=>{
+            const td=document.createElement('td');
+            if(index===1){const b=document.createElement('b');b.textContent=value||'-';td.appendChild(b);}
+            else if(index===8){const span=document.createElement('span');span.className='badge-check';span.textContent=value||'-';td.appendChild(span);}
+            else td.textContent=value||'-';
+            tr.appendChild(td);
+          });
           tbody.appendChild(tr);
         });
-      })
-      .catch(err => {
-        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:red;">Gagal memuat data. Pastikan URL Web App benar.</td></tr>';
-      });
+      } catch(err) {
+        document.getElementById('totalRecords').innerText='Total Tamu: —';
+        ['statTotal','statToday','statMonth','statInstitutions'].forEach(id=>document.getElementById(id).textContent='—');
+        document.getElementById('monthlyChart').innerHTML='<div class="empty-chart">Statistik belum dapat dimuat.</div>';
+        document.getElementById('unitChart').innerHTML='<div class="empty-chart">Statistik belum dapat dimuat.</div>';
+        tbody.innerHTML='<tr><td colspan="9" style="text-align:center;color:#b91c1c">Gagal memuat data. Periksa URL Web App dan format respons Google Apps Script.</td></tr>';
+      }
     }
   </script>
 </body>
