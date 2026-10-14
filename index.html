@@ -57,7 +57,14 @@
     .btn-logout{background:#ef4444;color:white;border:0;padding:8px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:13px}
     .filter-bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px;background:#f8fafc;padding:12px;border-radius:8px;border:1px solid var(--border-color)}
     .filter-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-    .filter-controls select{width:auto;padding:7px 10px;font-size:13px}
+    .filter-controls select,.filter-controls input{width:auto;padding:7px 10px;font-size:13px}
+    .search-input{min-width:220px;max-width:100%;border:1px solid var(--border-color);border-radius:6px;padding:8px 10px;font:inherit}
+    .pagination-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 2px;font-size:13px;color:var(--text-muted)}
+    .pagination-controls{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+    .page-btn{border:1px solid var(--border-color);background:white;color:var(--text-main);padding:7px 11px;border-radius:6px;cursor:pointer}
+    .page-btn.active{background:var(--primary-green);color:white;border-color:var(--primary-green)}
+    .page-btn:disabled{opacity:.45;cursor:not-allowed}
+    .page-size{border:1px solid var(--border-color);border-radius:6px;padding:7px;background:white}
     .total-label{font-size:13px;font-weight:700;color:var(--primary-green)}
     .stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:0 0 20px}
     .stat-card{background:#fff;border:1px solid rgba(11,102,35,.13);border-radius:12px;padding:18px;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:14px;min-width:0}
@@ -90,7 +97,7 @@
     .export-btn:hover{filter:brightness(.97)}
     @media print{
       body{background:#fff!important;color:#111!important}
-      header,nav,.dashboard-header .btn-logout,.filter-controls,.modal-overlay,footer,#guestFormView,.analytics-grid,.stats-grid{display:none!important}
+      header,nav,.dashboard-header .btn-logout,.filter-controls,.modal-overlay,footer,#guestFormView,.analytics-grid,.stats-grid,.pagination-bar{display:none!important}
       #adminDashboardView{display:block!important}
       .card,.card-body{box-shadow:none!important;border:0!important;padding:0!important}
       .filter-bar{border:0!important;background:#fff!important;padding:0!important}
@@ -188,6 +195,12 @@
             <select id="filterYear" class="form-control"><option value="all">Semua Tahun</option><option value="2025">2025</option><option value="2026" selected>2026</option><option value="2027">2027</option></select>
             <button onclick="fetchGuestData()" class="nav-btn" style="background:var(--primary-green);border:none"><i class="fa-solid fa-magnifying-glass"></i> Terapkan</button>
           </div>
+          <div class="filter-controls" style="width:100%;justify-content:flex-start">
+            <input id="searchGuest" class="search-input" type="search" placeholder="Cari nama, instansi, tujuan, telepon..." aria-label="Cari data pengunjung" oninput="applyClientFilters(true)">
+            <label for="dateFrom" style="font-size:12px">Dari</label><input id="dateFrom" type="date" class="form-control" aria-label="Tanggal awal" onchange="applyClientFilters(true)">
+            <label for="dateTo" style="font-size:12px">Sampai</label><input id="dateTo" type="date" class="form-control" aria-label="Tanggal akhir" onchange="applyClientFilters(true)">
+            <button type="button" class="nav-btn" onclick="resetClientFilters()">Reset pencarian</button>
+          </div>
           <div class="filter-controls export-controls">
             <button type="button" class="nav-btn export-btn" onclick="exportCSV()"><i class="fa-solid fa-file-excel"></i> Ekspor Excel (CSV)</button>
             <button type="button" class="nav-btn export-btn" onclick="exportPDF()"><i class="fa-solid fa-file-pdf"></i> Cetak / Simpan PDF</button>
@@ -198,6 +211,10 @@
           <thead><tr><th>Timestamp</th><th>Nama Lengkap</th><th>Instansi/Asal</th><th>Tujuan Unit Kerja</th><th>Telepon</th><th>Email</th><th>Keperluan</th><th>Pesan</th><th>Persetujuan</th></tr></thead>
           <tbody id="guestTableBody"><tr><td colspan="9" style="text-align:center;color:var(--text-muted)">Memuat data...</td></tr></tbody>
         </table></div>
+        <div class="pagination-bar" id="paginationBar">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span id="paginationInfo">Menampilkan 0 data</span><label for="pageSize">Baris per halaman</label><select id="pageSize" class="page-size" onchange="changePageSize()"><option value="10">10</option><option value="25" selected>25</option><option value="50">50</option><option value="100">100</option></select></div>
+          <div class="pagination-controls" id="paginationControls"></div>
+        </div>
       </div></div>
     </section>
   </main>
@@ -340,69 +357,109 @@
       renderBars('unitChart',unitEntries,'Belum ada data tujuan unit kerja.');
     }
 
-    function getExportRows(){
-      return Array.from(document.querySelectorAll('#guestTableBody tr')).filter(tr => tr.cells.length === 9)
-        .map(tr => Array.from(tr.cells).map(td => (td.innerText || '').trim()));
-    }
-    function exportCSV(){
-      const rows = getExportRows();
-      if(!rows.length){alert('Tidak ada data pada tabel untuk diekspor.');return;}
-      const headers = ['Timestamp','Nama Lengkap','Instansi/Asal','Tujuan Unit Kerja','Telepon','Email','Keperluan','Pesan','Persetujuan'];
-      const csvCell = value => '"' + String(value ?? '').replace(/"/g,'""') + '"';
-      const csv = '\\uFEFF' + [headers,...rows].map(row=>row.map(csvCell).join(';')).join('\\r\\n');
-      const blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      const month = document.getElementById('filterMonth').value;
-      const year = document.getElementById('filterYear').value;
-      a.href=url;a.download='laporan_buku_tamu_'+year+'_'+month+'.csv';
-      document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
-    }
-    function exportPDF(){
-      if(!getExportRows().length){alert('Tidak ada data pada tabel untuk dicetak.');return;}
-      window.print();
-    }
+    let allGuestData = [];
+    let filteredGuestData = [];
+    let currentPage = 1;
+    let pageSize = 25;
+    const DATA_FIELDS = ['timestamp','nama','instansi','unitKerja','telepon','email','keperluan','pesan','persetujuan'];
+    const DATA_HEADERS = ['Timestamp','Nama Lengkap','Instansi/Asal','Tujuan Unit Kerja','Telepon','Email','Keperluan','Pesan','Persetujuan'];
 
-    async function fetchGuestData(){
-      const tbody = document.getElementById('guestTableBody');
-      tbody.innerHTML = '<tr><td colspan="9" style="text-align:center"><i class="fa-solid fa-spinner fa-spin"></i> Memuat data dari Google Sheets...</td></tr>';
-      const month = document.getElementById('filterMonth').value;
-      const year = document.getElementById('filterYear').value;
-      const fetchUrl = SCRIPT_URL + '?action=get&month=' + encodeURIComponent(month) + '&year=' + encodeURIComponent(year);
-
-      try {
-        const response = await fetch(fetchUrl);
-        if (!response.ok) throw new Error('HTTP '+response.status);
-        const data = await response.json();
-        if (!Array.isArray(data)) throw new Error('Format data tidak sesuai');
-        document.getElementById('totalRecords').innerText = 'Total Tamu: ' + data.length.toLocaleString('id-ID');
-        updateStatistics(data);
-
-        if (data.length===0){
-          tbody.innerHTML='<tr><td colspan="9" style="text-align:center;color:var(--text-muted)">Tidak ada data kunjungan pada periode ini.</td></tr>';
-          return;
-        }
+    function rowDate(row){ return parseDate(row.timestamp); }
+    function applyClientFilters(resetPage=false){
+      const query=(document.getElementById('searchGuest')?.value||'').trim().toLocaleLowerCase('id-ID');
+      const fromVal=document.getElementById('dateFrom')?.value||'';
+      const toVal=document.getElementById('dateTo')?.value||'';
+      if(fromVal && toVal && fromVal>toVal){
+        document.getElementById('totalRecords').textContent='Rentang tanggal tidak valid';
+        return;
+      }
+      filteredGuestData=allGuestData.filter(row=>{
+        const haystack=DATA_FIELDS.map(key=>row[key]??'').join(' ').toLocaleLowerCase('id-ID');
+        if(query && !haystack.includes(query)) return false;
+        const d=rowDate(row);
+        if(fromVal && (!d || d < new Date(fromVal+'T00:00:00'))) return false;
+        if(toVal && (!d || d > new Date(toVal+'T23:59:59.999'))) return false;
+        return true;
+      });
+      if(resetPage) currentPage=1;
+      updateStatistics(filteredGuestData);
+      renderGuestTable();
+    }
+    function resetClientFilters(){
+      document.getElementById('searchGuest').value='';
+      document.getElementById('dateFrom').value='';
+      document.getElementById('dateTo').value='';
+      currentPage=1; applyClientFilters();
+    }
+    function changePageSize(){ pageSize=Number(document.getElementById('pageSize').value)||25; currentPage=1; renderGuestTable(); }
+    function goToPage(page){ currentPage=page; renderGuestTable(); }
+    function renderGuestTable(){
+      const tbody=document.getElementById('guestTableBody');
+      const total=filteredGuestData.length;
+      const pages=Math.max(1,Math.ceil(total/pageSize));
+      currentPage=Math.min(Math.max(1,currentPage),pages);
+      const start=(currentPage-1)*pageSize;
+      const visible=filteredGuestData.slice(start,start+pageSize);
+      document.getElementById('totalRecords').textContent='Total Tamu: '+total.toLocaleString('id-ID');
+      if(!total){tbody.innerHTML='<tr><td colspan="9" style="text-align:center;color:var(--text-muted);padding:24px">Tidak ada data yang cocok dengan pencarian atau filter.</td></tr>';}
+      else {
         tbody.innerHTML='';
-        data.forEach(row=>{
+        visible.forEach(row=>{
           const tr=document.createElement('tr');
-          // Gunakan textContent agar isi data tidak dieksekusi sebagai HTML.
-          [row.timestamp,row.nama,row.instansi,row.unitKerja,row.telepon,row.email,row.keperluan,row.pesan,row.persetujuan||'Setuju'].forEach((value,index)=>{
+          DATA_FIELDS.forEach((key,index)=>{
+            const value=key==='persetujuan'?(row[key]||'Setuju'):(row[key]||'-');
             const td=document.createElement('td');
-            if(index===1){const b=document.createElement('b');b.textContent=value||'-';td.appendChild(b);}
-            else if(index===8){const span=document.createElement('span');span.className='badge-check';span.textContent=value||'-';td.appendChild(span);}
-            else td.textContent=value||'-';
+            if(index===1){const b=document.createElement('b');b.textContent=value;td.appendChild(b);}
+            else if(index===8){const span=document.createElement('span');span.className='badge-check';span.textContent=value;td.appendChild(span);}
+            else td.textContent=value;
             tr.appendChild(td);
           });
           tbody.appendChild(tr);
         });
-      } catch(err) {
+      }
+      const shownStart=total?start+1:0, shownEnd=Math.min(start+pageSize,total);
+      document.getElementById('paginationInfo').textContent=`Menampilkan ${shownStart}–${shownEnd} dari ${total} data`;
+      const controls=document.getElementById('paginationControls');
+      controls.innerHTML='';
+      const addButton=(label,page,disabled=false,active=false)=>{
+        const b=document.createElement('button');b.type='button';b.className='page-btn'+(active?' active':'');b.textContent=label;b.disabled=disabled;b.setAttribute('aria-label',label==='‹'?'Halaman sebelumnya':label==='›'?'Halaman berikutnya':'Halaman '+label);b.onclick=()=>goToPage(page);controls.appendChild(b);
+      };
+      addButton('‹',currentPage-1,currentPage===1);
+      let first=Math.max(1,currentPage-2),last=Math.min(pages,first+4);first=Math.max(1,last-4);
+      for(let p=first;p<=last;p++) addButton(String(p),p,false,p===currentPage);
+      addButton('›',currentPage+1,currentPage===pages);
+    }
+    function exportCSV(){
+      const rows=filteredGuestData.map(row=>DATA_FIELDS.map(key=>key==='persetujuan'?(row[key]||'Setuju'):(row[key]??'')));
+      if(!rows.length){alert('Tidak ada data pada filter saat ini untuk diekspor.');return;}
+      const csvCell=value=>{let v=String(value??'');if(/^[=+@\-]/.test(v))v="'"+v;return '"'+v.replace(/"/g,'""')+'"';};
+      const csv='\uFEFF'+[DATA_HEADERS,...rows].map(row=>row.map(csvCell).join(';')).join('\r\n');
+      const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');
+      const month=document.getElementById('filterMonth').value,year=document.getElementById('filterYear').value;
+      a.href=url;a.download='laporan_buku_tamu_'+year+'_'+month+'.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+    }
+    function exportPDF(){ if(!filteredGuestData.length){alert('Tidak ada data pada filter saat ini untuk dicetak.');return;} window.print(); }
+
+    async function fetchGuestData(){
+      const tbody=document.getElementById('guestTableBody');
+      tbody.innerHTML='<tr><td colspan="9" style="text-align:center"><i class="fa-solid fa-spinner fa-spin"></i> Memuat data dari Google Sheets...</td></tr>';
+      const month=document.getElementById('filterMonth').value,year=document.getElementById('filterYear').value;
+      const fetchUrl=SCRIPT_URL+'?action=get&month='+encodeURIComponent(month)+'&year='+encodeURIComponent(year);
+      try{
+        const response=await fetch(fetchUrl);if(!response.ok)throw new Error('HTTP '+response.status);
+        const data=await response.json();if(!Array.isArray(data))throw new Error('Format data tidak sesuai');
+        allGuestData=data;currentPage=1;applyClientFilters();
+      }catch(err){
+        allGuestData=[];filteredGuestData=[];
         document.getElementById('totalRecords').innerText='Total Tamu: —';
         ['statTotal','statToday','statMonth','statInstitutions'].forEach(id=>document.getElementById(id).textContent='—');
         document.getElementById('monthlyChart').innerHTML='<div class="empty-chart">Statistik belum dapat dimuat.</div>';
         document.getElementById('unitChart').innerHTML='<div class="empty-chart">Statistik belum dapat dimuat.</div>';
         tbody.innerHTML='<tr><td colspan="9" style="text-align:center;color:#b91c1c">Gagal memuat data. Periksa URL Web App dan format respons Google Apps Script.</td></tr>';
+        document.getElementById('paginationInfo').textContent='Data tidak tersedia';document.getElementById('paginationControls').innerHTML='';
       }
     }
+
   </script>
 </body>
 </html>
